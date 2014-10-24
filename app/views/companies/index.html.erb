@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Type</th>
+      <th>Activity</th>
       <th>Phone1</th>
       <th>email</th>
       <th></th>
@@ -16,7 +16,7 @@
     <% @companies.each do |co| %>
       <tr>
         <td><%= co.name %></td>
-        <td><%= co.type %></td>
+        <td><%= co.activity %></td>
         <td><%= co.phone1 %></td>
         <td><%= co.email %></td>
         <td><%= link_to "Edit", edit_company_path(co) %></td>
