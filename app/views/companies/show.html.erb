@@ -1,2 +1,20 @@
-<h1>Companies#show</h1>
-<p>Find me in app/views/companies/show.html.erb</p>
+<h1>Company information</h1>
+
+<% if @company.errors.any? %>
+  <ul>
+    <% @company.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+Name: <%= @company.name %>
+<ul>
+  <li>Activity: <%= @company.activity %></li>
+  <li>Phone 1: <%= @company.phone1 %></li>
+  <li>email: <%= @company.email %></li>
+</ul>
+
+
+
+

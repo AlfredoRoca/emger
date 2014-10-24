@@ -32,6 +32,6 @@ class CompaniesController < ApplicationController
   end
 
   def load_company
-    @company = Company.find(:id)
+    @company = Company.find(params[:id])
   end
 end

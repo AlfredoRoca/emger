@@ -1,0 +1,27 @@
+<% if @company.errors.any? %>
+  <ul>
+    <% @company.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_for @company do |co| %>
+  <div class="form-group">
+    <%= co.label_field :name %>
+    <%= co.text_field :name, placeholder: 'company name' %>
+  </div>
+  <div class="form-group">
+    <%= co.label_field :activity %>
+    <%= co.select_field :activity, [COMPANY_TYPE_FACTORY, COMPANY_TYPE_PUBLIC] %>
+  </div>
+  <div class="form-group">
+    <%= co.label_field :phone1 %>
+    <%= co.telephone_field :phone1 %>
+  </div>
+  <div class="form-group">
+    <%= co.label_field :email %>
+    <%= co.email_field :email %>
+  </div>
+    <%= co.submit "Update" %>
+<% end %>
