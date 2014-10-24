@@ -6,7 +6,7 @@
   </ul>
 <% end %>
 
-<% form_for @scenario do |scen| %>
+<%= form_for @scenario do |scen| %>
   <%= scen.label :name %>
   <%= scen.text_field :name, placeholder: 'Scenario short name' %>
   <%= scen.label :description %>

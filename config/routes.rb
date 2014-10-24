@@ -1,14 +1,14 @@
 Rails.application.routes.draw do
 
-  get 'scenarios/index'
+  get 'companies/index'
 
-  get 'scenarios/new'
+  get 'companies/new'
 
-  get 'scenarios/show'
+  get 'companies/show'
 
-  get 'scenarios/edit'
+  get 'companies/edit'
 
-resources :emergencies
+resources :emergencies, :scenarios
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
