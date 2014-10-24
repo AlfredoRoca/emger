@@ -1,2 +1,29 @@
 <h1>Companies</h1>
-
+<%= link_to "New", new_company_path %>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Phone1</th>
+      <th>email</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @companies.each do |co| %>
+      <tr>
+        <td><%= co.name %></td>
+        <td><%= co.type %></td>
+        <td><%= co.phone1 %></td>
+        <td><%= co.email %></td>
+        <td><%= link_to "Edit", edit_company_path(co) %></td>
+        <td><%= link_to "Show", company_path(co) %></td>
+        <td><%= link_to "Delete", company_path(co), method: :delete,
+            data: {confirm: 'Are you sure?'} %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
