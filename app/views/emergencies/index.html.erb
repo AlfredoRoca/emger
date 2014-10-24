@@ -1,2 +1,23 @@
 <h1>Emergencies</h1>
-
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Status</th>
+      <th>Simulacrum</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @emergencies.each do |emer| %>
+      <tr>
+        <td><%= localize_date emer.date %></td>
+        <td><%= emer.status %></td>
+        <td><%= emer.simulacrum %></td>
+        <td><%= link_to "Edit", edit_emergency_path(emer) %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

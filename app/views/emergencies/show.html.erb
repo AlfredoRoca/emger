@@ -1,2 +1,6 @@
-<h1>Emergencies#show</h1>
-<p>Find me in app/views/emergencies/show.html.erb</p>
+<h1>Emergency information</h1>
+
+<dl class="dl-horizontal">
+  <dt>Date</dt>
+  <dd><%= localize_date @emergency.date %></dd>
+</dl>
