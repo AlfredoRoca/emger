@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :scenario do
-    name "MyString"
-description "MyString"
+    name        { Faker::Name.name }
+    description { Faker::Name.name }
   end
 
 end

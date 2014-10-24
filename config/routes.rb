@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
 
+  get 'scenarios/index'
+
+  get 'scenarios/new'
+
+  get 'scenarios/show'
+
+  get 'scenarios/edit'
+
 resources :emergencies
 
   # The priority is based upon order of creation: first created -> highest priority.

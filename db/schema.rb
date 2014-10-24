@@ -16,21 +16,28 @@ ActiveRecord::Schema.define(version: 20141023203945) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "companies", force: true do |t|
-    t.string   "name"
-    t.string   "type"
-    t.string   "phone1"
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   add_index "companies", ["name"], name: "index_companies_on_name", using: :btree
 
   create_table "emergencies", force: true do |t|
     t.datetime "date"
     t.string   "status"
     t.boolean  "simulacrum"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "scenarios", force: true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "companies", force: true do |t|
+    t.string   "name"
+    t.string   "type"
+    t.string   "phone1"
+    t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -44,6 +51,8 @@ ActiveRecord::Schema.define(version: 20141023203945) do
     t.string   "lastname"
   end
 
+  add_index "scenarios", ["name"], name: "index_scenarios_on_name", using: :btree
+
   add_index "people", ["name"], name: "index_people_on_name", using: :btree
 
   create_table "places", force: true do |t|
@@ -56,14 +65,5 @@ ActiveRecord::Schema.define(version: 20141023203945) do
   end
 
   add_index "places", ["name"], name: "index_places_on_name", using: :btree
-
-  create_table "scenarios", force: true do |t|
-    t.string   "name"
-    t.string   "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "scenarios", ["name"], name: "index_scenarios_on_name", using: :btree
 
 end

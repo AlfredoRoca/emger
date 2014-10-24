@@ -1,0 +1,15 @@
+<% if @scenario.errors.any? %>
+  <ul>
+    <% @scenario.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% form_for @scenario do |scen| %>
+  <%= scen.label :name %>
+  <%= scen.text_field :name, placeholder: 'Scenario short name' %>
+  <%= scen.label :description %>
+  <%= scen.text_field :description, placeholder: 'Scenario description' %>
+  <%= scen.submit "Submit" %>
+<% end %>
