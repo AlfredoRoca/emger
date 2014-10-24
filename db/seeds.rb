@@ -5,3 +5,13 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+require 'faker'
+
+10.times do |i|
+  Emergency.create({
+    date: Faker::Time.between(30.day.ago, Time.now, :all),
+    status: "open",
+    simulacrum: false
+    })
+end
