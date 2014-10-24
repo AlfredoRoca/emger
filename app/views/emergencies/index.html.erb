@@ -1,4 +1,5 @@
 <h1>Emergencies</h1>
+<%= link_to "New", new_emergency_path %>
 <table>
   <thead>
     <tr>
@@ -16,6 +17,9 @@
         <td><%= emer.status %></td>
         <td><%= emer.simulacrum %></td>
         <td><%= link_to "Edit", edit_emergency_path(emer) %></td>
+        <td><%= link_to "Show", emergency_path(emer) %></td>
+        <td><%= link_to "Delete", emergency_path(emer), method: :delete,
+                data: {confirm: "Are you sure?"}  %></td>
         <td></td>
       </tr>
     <% end %>

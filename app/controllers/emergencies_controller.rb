@@ -1,5 +1,5 @@
 class EmergenciesController < ApplicationController
-  before_action :load_emergency, only: [:edit, :update]
+  before_action :load_emergency, only: [:edit, :update, :show, :destroy]
 
   def index
     @emergencies = Emergency.all.order("date DESC")
@@ -12,6 +12,7 @@ class EmergenciesController < ApplicationController
   end
 
   def new
+    @emergency = Emergency.new
   end
 
   def update
@@ -23,6 +24,25 @@ class EmergenciesController < ApplicationController
       render :edit
     end
   end
+
+  def create
+    @emergency = Emergency.create(emergency_params.merge(status: EMERGENCY_STATUS_OPEN))
+    if @emergency.save
+      flash[:notice] = "Successfully created the new emergency..."
+      redirect_to emergency_path(@emergency)
+    else
+      flash[:error] = "Sorry, review the errors..."
+      render :new
+    end
+  end
+
+  def destroy
+    @emergency.destroy
+    flash[:notice] = "Successfully deleted..."
+    redirect_to emergencies_url
+  end
+
+  private
 
   def emergency_params
     params.require(:emergency).permit(:date, :status, :simulacrum)

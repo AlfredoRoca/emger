@@ -1,0 +1,21 @@
+<% if @emergency.errors.any? %>
+  <ul>
+    <% @emergency.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_for @emergency do |emer| %>
+  <div class="form-group">
+    <%= emer.label :date, "emergency date" %>
+    <%= emer.datetime_select :date, class: "form-control" %>
+  </div>
+  <div class="checkbox">
+    <%= emer.label :simulacrum do %>
+      <%= emer.check_box :simulacrum %> Simulacrum
+    <% end %>
+  </div>
+
+  <%= emer.submit "Edit emergency info!", class: "btn btn-default" %>
+<% end %>

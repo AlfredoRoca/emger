@@ -1,6 +1,11 @@
 <h1>Emergency information</h1>
 
-<dl class="dl-horizontal">
-  <dt>Date</dt>
-  <dd><%= localize_date @emergency.date %></dd>
-</dl>
+<ul>
+  <li>Date: <%= localize_date @emergency.date %></li>
+  <li>Status: <%= @emergency.status %></li>
+  <% if @emergency.simulacrum %>
+    <li>"Simulacrum" </li>
+  <% end %>
+</ul>
+
+
