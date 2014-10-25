@@ -1,0 +1,16 @@
+<h1>Place info</h1>
+
+<% if @place.errors.any? %>
+  <ul>
+    <% @place.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+Name: <%= @place.name %>
+<ul>
+  <li>Description: <%= @place.description %></li>
+  <li>Coordinate X:<%= @place.coord_x %></li>
+  <li>Coordinate Y:<%= @place.coord_y %></li>
+</ul>

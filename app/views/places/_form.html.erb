@@ -1,0 +1,27 @@
+<% if @place.errors.any? %>
+  <ul>
+    <% @place.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_for @place do |place| %>
+  <div class="form-group">
+  <%= place.label :name %>
+  <%= place.text_field :name %>
+  </div>
+  <div class="form-group">
+  <%= place.label :description %>
+  <%= place.text_field :description %>
+  </div>
+  <div class="form-group">
+  <%= place.label :coord_x %>
+  <%= place.text_field :coord_x %>
+  </div>
+  <div class="form-group">
+  <%= place.label :coord_y %>
+  <%= place.text_field :coord_y %>
+  </div>
+  <%= place.submit 'Update', class: "btn btn-default" %>
+<% end %>

@@ -1,5 +1,13 @@
 <h1>Emergency information</h1>
 
+<% if @emergency.errors.any? %>
+  <ul>
+    <% @emergency.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
 <ul>
   <li>Date: <%= localize_date @emergency.date %></li>
   <li>Status: <%= @emergency.status %></li>

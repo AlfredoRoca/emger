@@ -7,9 +7,13 @@
 <% end %>
 
 <%= form_for @scenario do |scen| %>
+  <div class="form-group">
   <%= scen.label :name %>
   <%= scen.text_field :name, placeholder: 'Scenario short name' %>
+  </div>
+  <div class="form-group">
   <%= scen.label :description %>
   <%= scen.text_field :description, placeholder: 'Scenario description' %>
-  <%= scen.submit "Submit" %>
+  </div>
+  <%= scen.submit "Submit", class: "btn btn-default" %>
 <% end %>
