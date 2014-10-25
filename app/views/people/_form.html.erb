@@ -1,0 +1,19 @@
+<% if @person.errors.any? %>
+<ul>
+  <% @person.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+  <% end %>
+</ul>
+<% end %>
+
+<%= form_for @person do |p| %>
+  <%= p.label :name %>
+  <%= p.text_field :name, placeholder: 'first name' %>
+  <%= p.label :lastname %>
+  <%= p.text_field :lastname, placeholder: 'surname' %>
+  <%= p.label :phone %>
+  <%= p.telephone_field :phone %>
+  <%= p.label :email %>
+  <%= p.email_field :email %>
+  <%= p.submit "Update" %>
+<% end %>

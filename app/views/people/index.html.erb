@@ -1,0 +1,29 @@
+<h1>People</h1>
+<%= link_to "New", new_person_path %>
+<table>
+  <thead>
+    <tr>
+      <th>Lastname</th>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>email</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @people.each do |p| %>
+      <tr>
+        <td><%= p.lastname %></td>
+        <td><%= p.name %></td>
+        <td><%= p.phone %></td>
+        <td><%= p.email %></td>
+        <td><%= link_to "Edit", edit_person_path(p) %></td>
+        <td><%= link_to "Show", person_path(p) %></td>
+        <td><%= link_to "Delete", person_path(p), method: :delete,
+          data: { confirm: 'Are you sure?' }%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
