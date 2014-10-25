@@ -3,7 +3,7 @@ require 'benchmark'
 
 include ModBus
 
-TIMES = 1000
+TIMES = 5000
 
 srv = ModBus::TCPServer.new 1502 
 srv.coils = [0,1]  * 50
