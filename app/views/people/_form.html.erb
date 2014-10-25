@@ -15,5 +15,7 @@
   <%= p.telephone_field :phone %>
   <%= p.label :email %>
   <%= p.email_field :email %>
+  <%= p.label :company_id %>
+  <%= p.select :company_id, Company.all.collect {|co| [co.name, co.id]} %>
   <%= p.submit "Update" %>
 <% end %>
