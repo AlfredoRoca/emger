@@ -20,15 +20,31 @@ class CompaniesController < ApplicationController
     end
   end
 
+  def update
+    if @company.save(company_params)
+      flash[:notice] = "Successfully updated..."
+      redirect_to companies_path
+    else
+      flash[:error] = "Sorry, cannot update. Review the errors..."
+      render :edit
+    end
+  end
+
   def show
   end
 
   def edit
   end
 
+  def destroy
+    @company.destroy
+    flash[:notice] = "Successfully deleted..."
+    redirect_to companies_url
+  end
+
   private
   def company_params
-    params.require(:company).permit(:name, :type, :phone1, :email)
+    params.require(:company).permit(:name, :activity, :phone1, :email)
   end
 
   def load_company
