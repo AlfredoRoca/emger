@@ -13,6 +13,40 @@ Name: <%= @company.name %>
   <li>Activity: <%= @company.activity %></li>
   <li>Phone 1: <%= @company.phone1 %></li>
   <li>email: <%= @company.email %></li>
+  <li>People: 
+    <% if @company.people.any? %>
+      <table>
+        <thead>
+          <tr>
+            <th>Lastname</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>email</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @company.people.each do |p| %>
+            <tr>
+              <td><%= p.lastname %></td>
+              <td><%= p.name %></td>
+              <td><%= p.phone %></td>
+              <td><%= p.email %></td>
+              <td><%= link_to "Edit", edit_person_path(p) %></td>
+              <td><%= link_to "Show", person_path(p) %></td>
+              <td><%= link_to "Delete", person_path(p), method: :delete,
+                data: { confirm: 'Are you sure?' }%></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+    NONE
+    <% end %>
+
+  </li>
 </ul>
 
 
