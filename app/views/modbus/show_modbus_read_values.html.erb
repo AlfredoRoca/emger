@@ -1,0 +1,19 @@
+
+<% if @registers %>
+<h1>Show holding registers</h1>
+  <ol>
+    <% @registers.each do |reg| %>
+      <li><%= reg %></li>
+    <% end %>
+  </ol>
+<% end %>
+
+
+<% if @coils %>
+<h1>Show coils</h1>
+  <ol>
+    <% @coils.each do |coil| %>
+      <li><%= coil %></li>
+    <% end %>
+  </ol>
+<% end %>
