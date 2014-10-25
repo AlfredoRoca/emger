@@ -1,9 +1,8 @@
 FactoryGirl.define do
   factory :place do
-    name "MyString"
-description "MyString"
-coord_x "MyString"
-coord_y "MyString"
+    name { Faker::Name.name }
+    description { Faker::Lorem.sentence(3) }
+    coord_x { "42.44554545"}
+    coord_y { "2.3245345" }
   end
-
 end
