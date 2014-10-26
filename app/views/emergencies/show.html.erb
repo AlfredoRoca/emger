@@ -15,5 +15,7 @@
     <li>"Simulacrum" </li>
   <% end %>
 </ul>
-
+<%= link_to "Close", set_coil_path, method: :post,
+  data: { id: @emergency } %>
+<%= button_tag "CLOSE", type: 'button', data: { confirm: "Are you sure?" } %>
 
