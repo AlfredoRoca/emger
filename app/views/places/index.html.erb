@@ -7,6 +7,7 @@
       <th>Description</th>
       <th>Coord X</th>
       <th>Coord Y</th>
+      <th>Emergencies</th>
       <th></th>
       <th></th>
       <th></th>
@@ -19,6 +20,7 @@
         <td><%= place.description %></td>
         <td><%= place.coord_x %></td>
         <td><%= place.coord_y %></td>
+        <td><%= place.emergencies.count %></td>
         <td><%= link_to "Edit", edit_place_path(place) %></td>
         <td><%= link_to "Show", place_path(place) %></td>
         <td><%= link_to "Delete", place_path(place), method: :delete,

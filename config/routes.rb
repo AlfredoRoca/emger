@@ -10,10 +10,11 @@ root 'emergencies#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
-
+get 'emergency_close/:id' => 'emergencies#close', as: :close_emergency
 get 'modbus_read_reg' => 'modbus#read_holding_registers'
 get 'modbus_read_coil' => 'modbus#read_coils'
-post 'modbus_write_coil' => 'modbus#write_coil', as: :set_coil
+post 'modbus_write_coil/:id' => 'modbus#write_single_coil', as: :write_clear_in_plc
+post 'modbus_write_reg/:id' => 'modbus#write_single_register', as: :write_id_in_plc
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

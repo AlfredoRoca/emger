@@ -15,7 +15,6 @@
     <li>"Simulacrum" </li>
   <% end %>
 </ul>
-<%= link_to "Close", set_coil_path, method: :post,
-  data: { id: @emergency } %>
-<%= button_tag "CLOSE", type: 'button', data: { confirm: "Are you sure?" } %>
-
+<%= link_to "Close", close_emergency_path(@emergency) %>
+<%= link_to "Write CLEAR in plc", write_clear_in_plc_path(@emergency), method: :post %>
+<%= link_to "Write ID in plc", write_id_in_plc_path(@emergency), method: :post %>

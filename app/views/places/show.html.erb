@@ -13,4 +13,13 @@ Name: <%= @place.name %>
   <li>Description: <%= @place.description %></li>
   <li>Coordinate X:<%= @place.coord_x %></li>
   <li>Coordinate Y:<%= @place.coord_y %></li>
+  <li>Emergencies in this place
+    <ol>
+      <% @place.emergencies.each do |emer| %>
+        <li><%= localize_date emer.date %>: Status: <%= emer.status %>
+            <%= link_to "Edit", edit_emergency_path(emer) %>
+        </li>
+      <% end %>
+    </ol>
+  </li>
 </ul>

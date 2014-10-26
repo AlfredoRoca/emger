@@ -9,9 +9,59 @@
 require 'faker'
 
 10.times do |i|
-  Emergency.create({
-    date: Faker::Time.between(30.day.ago, Time.now, :all),
-    status: "open",
-    simulacrum: false
+  place = Place.create({
+    name:         Faker::Address.city,
+    description:  Faker::Address.street_address
     })
+  ((i+4)/2).times do |j|
+    Emergency.create({
+      date:       Faker::Time.between(60.day.ago, 5.days.ago, :all),
+      status:     Emergency::EMERGENCY_STATUS_OPEN,
+      simulacrum: false,
+      place_id:   place.id
+      })
+  end
+end
+
+10.times do |i| 
+  co = Company.create({
+    name:       Faker::Company.name,
+    activity:   Company::COMPANY_TYPE_FACTORY,
+    phone1:     Faker::PhoneNumber.phone_number,
+    email:      Faker::Internet.email
+  })
+  3.times do |per| 
+    Person.create({
+      name:         Faker::Name.first_name,
+      lastname:     Faker::Name.last_name,
+      phone:        Faker::PhoneNumber.phone_number,
+      email:        Faker::Internet.email,
+      company_id:   co.id
+      })
+  end
+end
+
+10.times do |i| 
+  co = Company.create({
+    name:       Faker::Company.name,
+    activity:   Company::COMPANY_TYPE_PUBLIC,
+    phone1:     Faker::PhoneNumber.phone_number,
+    email:      Faker::Internet.email
+  })
+  3.times do |per| 
+    Person.create({
+      name:         Faker::Name.first_name,
+      lastname:     Faker::Name.last_name,
+      phone:        Faker::PhoneNumber.phone_number,
+      email:        Faker::Internet.email,
+      company_id:   co.id
+      })
+  end
+end
+
+10.times do |i| 
+  Scenario.create({
+    name:         Faker::Lorem.word,
+    description:  Faker::Hacker.adjective + " " + Faker::Hacker.adjective + " " + Faker::Hacker.noun
+  })
 end

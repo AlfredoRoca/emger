@@ -1,5 +1,5 @@
 class EmergenciesController < ApplicationController
-  before_action :load_emergency, only: [:edit, :update, :show, :destroy]
+  before_action :load_emergency, only: [:edit, :update, :show, :destroy, :close]
 
   def index
     @emergencies = Emergency.all.order("date DESC")
@@ -22,6 +22,16 @@ class EmergenciesController < ApplicationController
     else
       flash[:error] = "Sorry, update not possible. Review the errors"
       render :edit
+    end
+  end
+
+  def close
+    if @emergency.update(emergency_params.merge(status: EMERGENCY_STATUS_CLOSED))
+      flash[:notice] = "Emergency successfully closed..."
+      redirect_to set_coil_path
+    else
+      flash[:error] = "Impossible to close the emergency. Review the errors..."
+      render :show
     end
   end
 

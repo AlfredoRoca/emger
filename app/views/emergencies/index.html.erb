@@ -6,6 +6,9 @@
       <th>Date</th>
       <th>Status</th>
       <th>Simulacrum</th>
+      <th>Place</th>
+      <th>Place name</th>
+      <th></th>
       <th></th>
       <th></th>
     </tr>
@@ -16,11 +19,12 @@
         <td><%= localize_date emer.date %></td>
         <td><%= emer.status %></td>
         <td><%= emer.simulacrum %></td>
+        <td><%= emer.place_id %></td>
+        <td><%= emer.place.name %></td>
         <td><%= link_to "Edit", edit_emergency_path(emer) %></td>
         <td><%= link_to "Show", emergency_path(emer) %></td>
         <td><%= link_to "Delete", emergency_path(emer), method: :delete,
                 data: {confirm: "Are you sure?"}  %></td>
-        <td></td>
       </tr>
     <% end %>
   </tbody>

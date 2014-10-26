@@ -16,6 +16,10 @@
       <%= emer.check_box :simulacrum %> Simulacrum
     <% end %>
   </div>
+  <div>
+    <%= emer.label :place_id %>
+    <%= emer.select :place_id, Place.all.collect {|place| [place.name, place.id]} %>
+  </div>
 
   <%= emer.submit "Edit emergency info!", class: "btn btn-default" %>
 <% end %>
