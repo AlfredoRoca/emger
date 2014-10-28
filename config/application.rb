@@ -26,5 +26,17 @@ module Emger
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.default_locale = :en
+
+    config.action_mailer.delivery_method       = :smtp
+    config.action_mailer.smtp_settings         = {
+      address:              'xxxxxxxxxxxx',
+      port:                 25,
+      domain:               'xxxxxxxxxxxxxx',
+      user_name:            'xxxxxxxxxxxx',
+      password:             ENV["SMTP_PASSWORD"],
+      authentication:       'plain',
+      enable_starttls_auto: true,
+      openssl_verify_mode:  'none'
+    }
   end
 end

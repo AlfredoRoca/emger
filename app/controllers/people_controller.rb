@@ -19,6 +19,7 @@ class PeopleController < ApplicationController
     @person = Person.create(person_params)
     if @person.save
       flash[:notice] = "Successfully created new person..."
+      PersonMailer.welcome_email(@person).deliver
       redirect_to people_url
     else
       flash[:error] = "Sorry, cannot create new person. Review the errors..."
