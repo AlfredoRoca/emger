@@ -23,5 +23,10 @@ RSpec.describe Person, :type => :model do
       expect(person.valid?).to be false
       expect(person.errors[:lastname].present?).to be true
     end
+    it "validates presence of password" do
+      person = FactoryGirl.build(:person, password: nil)
+      expect(person.valid?).to be false
+      expect(person.errors[:password].present?).to be true
+    end
   end
 end
