@@ -8,10 +8,25 @@
 
 require 'faker'
 
+some_geopoints = [
+  [41.105844, 1.178449],
+  [41.105242, 1.173567],
+  [41.101523, 1.182923],
+  [41.106139, 1.190176],
+  [41.102841, 1.191227],
+  [41.108880, 1.195422],
+  [41.110448, 1.203554],
+  [41.111644, 1.214358],
+  [41.109065, 1.215227],
+  [41.106535, 1.204681]
+]
+
 10.times do |i|
   place = Place.create({
     name:         Faker::Address.city,
     description:  Faker::Address.street_address
+    coord_x:      some_geopoints[i][0]
+    coord_y:      some_geopoints[i][1]
     })
   ((i+4)/2).times do |j|
     Emergency.create({

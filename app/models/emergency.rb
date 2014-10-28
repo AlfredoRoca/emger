@@ -3,4 +3,5 @@ class Emergency < ActiveRecord::Base
   EMERGENCY_STATUS_CLOSED = "closed"
   validates :date, presence: true
   belongs_to :place
+  has_many :companies
 end

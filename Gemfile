@@ -53,3 +53,5 @@ gem 'whenever'
 
 # modbus https://github.com/flipback/rmodbus
 gem 'rmodbus'
+
+# Google Maps
