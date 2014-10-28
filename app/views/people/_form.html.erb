@@ -7,15 +7,33 @@
 <% end %>
 
 <%= form_for @person do |p| %>
-  <%= p.label :name %>
-  <%= p.text_field :name, placeholder: 'first name' %>
-  <%= p.label :lastname %>
-  <%= p.text_field :lastname, placeholder: 'surname' %>
-  <%= p.label :phone %>
-  <%= p.telephone_field :phone %>
-  <%= p.label :email %>
-  <%= p.email_field :email %>
-  <%= p.label :company_id %>
-  <%= p.select :company_id, Company.all.collect {|co| [co.name, co.id]} %>
-  <%= p.submit "Update" %>
+  <div class="form-group">
+    <%= p.label :name %>
+    <%= p.text_field :name, placeholder: 'first name' %>
+  </div>
+  <div class="form-group">
+    <%= p.label :lastname %>
+    <%= p.text_field :lastname, placeholder: 'surname' %>
+  </div>
+  <div class="form-group">
+    <%= p.label :phone %>
+    <%= p.telephone_field :phone %>
+  </div>
+  <div class="form-group">
+    <%= p.label :email %>
+    <%= p.email_field :email %>
+  </div>
+  <div class="form-group">
+    <%= p.label :password %>
+    <%= p.password_field :password %>
+  </div>
+  <div class="form-group">
+    <%= p.label :password_confirmation %>
+    <%= p.password_field :password_confirmation %>
+  </div>
+  <div class="form-group">
+    <%= p.label :company_id %>
+    <%= p.select :company_id, Company.all.collect {|co| [co.name, co.id]} %>
+  </div>
+    <%= p.submit "Update" %>
 <% end %>
