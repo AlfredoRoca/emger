@@ -17,8 +17,8 @@ class LoginController < ApplicationController
   def destroy
     session[:current_user_id] = nil
     respond_to do |format|
-      format.html { redirect_to emergencies_path }
-      format.js   { render js: "window.location.href='#{emergencies_path}'" }
+      format.html { redirect_to root_path }
+      format.js   { render js: "window.location.href='#{root_path}'" }
     end
   end
 end
