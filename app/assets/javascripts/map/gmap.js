@@ -18,8 +18,11 @@ function initialize() {
           streetViewControl: true,
           overviewMapControl: true
         };
-        // initializing map
-        map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+  // initializing map
+  map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+
+  //put the places pins
+          
 }
 
 function loadScript() {
@@ -34,3 +37,13 @@ function loadScript() {
     '&callback=initialize';
   document.body.appendChild(script);
 }
+
+var marker;
+function createMarker(coords, map, title){
+  marker = new google.maps.Marker({
+    position: coords,
+    map: map,
+    title: title
+  });
+}
+
