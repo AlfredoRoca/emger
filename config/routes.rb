@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
 
+  get 'followups/index'
+
+  get 'followups/new'
+
+  get 'followups/edit'
+
+  get 'followups/show'
+
+  get 'followups/destroy'
+
   resources :emergencies, :scenarios, :companies, :places, :people
 
   root 'login#new'
