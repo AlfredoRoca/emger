@@ -1,16 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'followups/index'
-
-  get 'followups/new'
-
-  get 'followups/edit'
-
-  get 'followups/show'
-
-  get 'followups/destroy'
-
-  resources :emergencies, :scenarios, :companies, :places, :people
+  resources :emergencies, :scenarios, :companies, :places, :people, :followups
 
   root 'login#new'
 
@@ -22,5 +12,7 @@ Rails.application.routes.draw do
 
   post   "/login",  to: "login#create"
   delete "/logout", to: "login#destroy"
+
+  get 'pinned_places' => 'places#load_pinned_places'
 
 end

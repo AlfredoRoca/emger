@@ -18,7 +18,9 @@
   </div>
   <div>
     <%= emer.label :place_id %>
-    <%= emer.select :place_id, Place.all.collect {|place| [place.name, place.id]} %>
+    <%= emer.select :place_id, 
+        Place.all.collect {|place| [place.name, place.id]},
+        {include_blank: true} %>
   </div>
 
   <%= emer.submit "Update", class: "btn btn-default" %>

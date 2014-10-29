@@ -12,7 +12,7 @@ function initialize() {
   var mapOptions = {
           center: new google.maps.LatLng(default_map_center_latitude, default_map_center_longitude),
           zoom: 14,
-          mapTypeId: google.maps.MapTypeId.NORMAL,
+          mapTypeId: google.maps.MapTypeId.SATELLITE,
           panControl: true,
           scaleControl: false,
           streetViewControl: true,
@@ -22,7 +22,20 @@ function initialize() {
   map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
 
   //put the places pins
-          
+  $.ajax({
+    type: "GET",
+    url: 'pinned_places',
+    data_type: "json"
+  }).done(function(data,textStatus, jqXHR){
+      // this works
+      // data.forEach(function(element, index, array) {
+      //   console.log("element:", element.name + ": (" + element.coord_x + ", " + element.coord_y + ")"); });
+      traverse_array_of_pinned_places(data);
+    }).fail(function(jqXHR, textStatus, errorThrown){
+      alert( textStatus );
+    }).always(function() { 
+      // alert("complete"); 
+    });
 }
 
 function loadScript() {
@@ -47,3 +60,11 @@ function createMarker(coords, map, title){
   });
 }
 
+
+function traverse_array_of_pinned_places(array_of_pinned_places){
+    array_of_pinned_places.forEach(function(element, index, array) {
+      console.log("element:", element.name + ": (" + element.coord_x + ", " + element.coord_y + ")"); 
+      var coords = new google.maps.LatLng(parseFloat(element.coord_x), parseFloat(element.coord_y));
+      createMarker(coords, map, element.name);
+    });
+}

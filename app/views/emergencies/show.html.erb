@@ -1,20 +1,52 @@
 <h1>Emergency information</h1>
+<% if current_user %>
 
-<% if @emergency.errors.any? %>
+  <% if @emergency.errors.any? %>
+    <ul>
+      <% @emergency.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
   <ul>
-    <% @emergency.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
+    <li>Date: <%= localize_date @emergency.date %></li>
+    <li>Status: <%= @emergency.status %></li>
+    <% if @emergency.simulacrum %>
+      <li>"Simulacrum" </li>
     <% end %>
   </ul>
-<% end %>
 
-<ul>
-  <li>Date: <%= localize_date @emergency.date %></li>
-  <li>Status: <%= @emergency.status %></li>
-  <% if @emergency.simulacrum %>
-    <li>"Simulacrum" </li>
-  <% end %>
-</ul>
-<%= link_to "Close", close_emergency_path(@emergency) %>
-<%= link_to "Write CLEAR in plc", write_clear_in_plc_path(@emergency), method: :post %>
-<%= link_to "Write ID in plc", write_id_in_plc_path(@emergency), method: :post %>
+  <h2>Follow-up</h2>
+    <%= link_to "New", new_followup_path %>
+    <% if @emergency.followups.any? %>
+        <% @emergency.followups.each do |f| %>
+      <ul>
+          <li>
+            Created: <%= f.created_at %> 
+          </li>
+          <li>
+            Updated: <%= f.updated_at %>
+          </li>
+          <li>
+            Title: <%= f.title %>
+          </li>
+          <li>
+            Description: <%= f.description %>
+          </li>
+          <li>
+            <%= link_to "Edit follow-up", edit_followup_path(f) %>
+          </li>
+      </ul>
+        <% end %>
+    <% else %>
+      <p>No follow-up</p>
+    <% end %>
+
+
+
+  <%= link_to "Close", close_emergency_path(@emergency) %>
+  <%= link_to "Write CLEAR in plc", write_clear_in_plc_path(@emergency), method: :post %>
+  <%= link_to "Write ID in plc", write_id_in_plc_path(@emergency), method: :post %>
+
+<% end %>

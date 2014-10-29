@@ -1,1 +1,14 @@
 <h1>Emergency follow-up</h1>
+
+<% if current_user %>
+  <%= link_to "New", new_followup_path %>
+
+  <% if @followups && @followups.any? %>
+    <% @followups.each do |f| %>
+      <%= f.created_at %> <%= f.updated_at %><%= f.title %><%= f.description %>
+    <% end %>
+  <% else %>
+  <p>No follow-ups</p>
+  <% end %>
+
+<% end %>

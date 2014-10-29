@@ -1,0 +1,24 @@
+<% if @followup.errors.any? %>
+  <ul>
+    <% @followup.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_for @followup do |fo| %>
+  <div>
+    <%= fo.label :title %>
+    <%= fo.text_field :title, placeholder: 'short title' %>
+  </div>
+  <div>
+    <%= fo.label :description %>
+    <%= fo.text_field :description, placeholder: 'description' %>
+  </div>
+  <div>
+    <%= fo.label :emergency_id %>
+    <%= fo.select :emergency_id, Emergency.all.collect {|emergency| ["#{emergency.date} at #{emergency.place.name}", emergency.id]}  %>
+  </div>
+
+  <%= fo.submit "Update", class: "btn btn-default" %>
+<% end %>
