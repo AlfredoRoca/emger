@@ -6,6 +6,8 @@ class PersonMailer < ActionMailer::Base
     @user = user
     @fullname = "#{@user.name} #{@user.lastname}"
     @url = "http://localhost:3000"
-    mail to: "#{@fullname} <#{@user.email}> ", subject: 'Welcome to the Emergency Manager platform!'
+    mail  to: "#{@fullname} <#{@user.email}> ", 
+          cc: ADMINISTRATOR_MAIL,
+          subject: 'Welcome to the Emergency Manager platform!'
   end
 end

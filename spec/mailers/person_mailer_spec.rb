@@ -1,4 +1,5 @@
 require "rails_helper"
+ADMINISTRATOR_MAIL = "alfredo.roca.mas@gmail.com" # personMailer.rb
 
 RSpec.describe PersonMailer, :type => :mailer do
   describe "#welcome" do
@@ -7,11 +8,12 @@ RSpec.describe PersonMailer, :type => :mailer do
       person = FactoryGirl.create(:person, name: "Florencio", email: "alfredo.roca.mas@gmail.com")
     end
     # let(:person) { create(:person, name: "Florencio", email: "alfredo.roca.mas@gmail.com") }
-    it "sends welcome email" do
+    it "sends welcome email to new user and to the administrator" do
       mail = PersonMailer.welcome_email(person).deliver
-      expect(PersonMailer.deliveries).not_to be_empty
+      expect(ActionMailer::Base.deliveries).not_to be_empty
       expect(mail.from.first).to eq("manager@control.com")
       expect(mail.to).to match_array([person.email])
+      expect(mail.cc).to match_array([ADMINISTRATOR_MAIL])
     end
   end
 
