@@ -4,4 +4,7 @@ class Emergency < ActiveRecord::Base
   validates :date, presence: true
   belongs_to :place
   has_many :companies
+  has_many :followups
+  accepts_nested_attributes_for :followups
+  scope :open, -> { where(status: EMERGENCY_STATUS_OPEN) }
 end

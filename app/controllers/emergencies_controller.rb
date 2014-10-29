@@ -2,7 +2,7 @@ class EmergenciesController < ApplicationController
   before_action :load_emergency, only: [:edit, :update, :show, :destroy, :close]
 
   def index
-    @emergencies = Emergency.all.order("date DESC")
+    @emergencies = Emergency.open.order("date DESC")
   end
 
   def edit
@@ -26,9 +26,9 @@ class EmergenciesController < ApplicationController
   end
 
   def close
-    if @emergency.update(emergency_params.merge(status: EMERGENCY_STATUS_CLOSED))
+    if @emergency.update(status: Emergency::EMERGENCY_STATUS_CLOSED)
       flash[:notice] = "Emergency successfully closed..."
-      redirect_to set_coil_path
+      redirect_to write_clear_in_plc_url
     else
       flash[:error] = "Impossible to close the emergency. Review the errors..."
       render :show
@@ -36,7 +36,7 @@ class EmergenciesController < ApplicationController
   end
 
   def create
-    @emergency = Emergency.create(emergency_params.merge(status: EMERGENCY_STATUS_OPEN))
+    @emergency = Emergency.create(emergency_params.merge(status: Emergency::EMERGENCY_STATUS_OPEN))
     if @emergency.save
       flash[:notice] = "Successfully created the new emergency..."
       redirect_to emergency_path(@emergency)
@@ -55,7 +55,7 @@ class EmergenciesController < ApplicationController
   private
 
   def emergency_params
-    params.require(:emergency).permit(:date, :status, :simulacrum)
+    params.require(:emergency).permit(:date, :status, :simulacrum, :place_id)
   end
 
   def load_emergency

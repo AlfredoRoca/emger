@@ -9,6 +9,7 @@
         <th>Simulacrum</th>
         <th>Place</th>
         <th>Place name</th>
+        <th>Follow-up</th>
         <th></th>
         <th></th>
         <th></th>
@@ -20,8 +21,9 @@
           <td><%= localize_date emer.date %></td>
           <td><%= emer.status %></td>
           <td><%= emer.simulacrum %></td>
-          <td><%= emer.place_id %></td>
-          <td><%= emer.place.name %></td>
+          <td><%= emer.place_id if emer.place %></td>
+          <td><%= emer.place.name if emer.place %></td>
+          <td><%= emer.followups.count if emer.followups %></td>
           <td><%= link_to "Edit", edit_emergency_path(emer) %></td>
           <td><%= link_to "Show", emergency_path(emer) %></td>
           <td><%= link_to "Delete", emergency_path(emer), method: :delete,
