@@ -5,4 +5,7 @@ class Person < ActiveRecord::Base
   validates :name, presence: true
   validates :lastname, presence: true
   belongs_to :company
+  has_many :places, through: :notification_relations
+  has_many :notification_relations
+
 end
