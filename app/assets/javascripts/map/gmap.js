@@ -30,7 +30,8 @@ function initialize() {
           panControl: true,
           scaleControl: true,
           streetViewControl: true,
-          overviewMapControl: true
+          overviewMapControl: true,
+          scrollwheel: false
         };
 
   // initializing map with the above options and draws it in the page
@@ -55,14 +56,6 @@ function initialize() {
     google.maps.event.addListener(map, 'click', function(event) {
       placeMarker(event.latLng);
       });    
-
-    // open menu to operate with the pin
-    // - delete
-    // - change title
-    // - open emergency
-    google.map.event.addListener(map, 'dblclick', function(event) {
-      alert(event);
-    })    
 
 }
 
@@ -91,9 +84,32 @@ function put_a_marker_in_place(array_of_pinned_places){
 }
 
 function add_click_event_listener_to_marker(marker) {
-    google.maps.event.addListener(marker, 'click', function() {
-        map.setZoom(default_place_zoom);
-        map.setCenter(marker.getPosition());
+    google.maps.event.addListener(marker, 'click', function(event) {
+      console.log(event);
+      // event.latLng
+      // event.nb: MouseEvent
+      // event.pixel
+      console.log("shift? " + (event.nb.shiftKey ? "true" : "false"));
+        if (!event.nb.shiftKey && !event.nb.ctrlKey) {
+          // when click on a marker, applies zoom and centers on it
+          map.setZoom(default_place_zoom);
+          map.setCenter(marker.getPosition());
+          console.log("click with no buttons:");
+          console.log(event);
+        }
+        else {
+          // when click with button on a marker
+          // open menu to operate with the pin
+          // - delete
+          // - change title
+          // - open emergency
+          console.log("click with button:");
+          console.log(event);
+        }
+    });
+
+    google.maps.event.addListener(marker, 'rightclick', function() {
+        console.log("rightclick");
       });
 }
 
