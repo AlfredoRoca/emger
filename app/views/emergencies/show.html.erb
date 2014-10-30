@@ -12,6 +12,7 @@
   <ul>
     <li>Date: <%= localize_date @emergency.date %></li>
     <li>Status: <%= @emergency.status %></li>
+    <li>Place: <%= @emergency.place.name %> - <%= @emergency.place.description %></li>
     <% if @emergency.simulacrum %>
       <li>"Simulacrum" </li>
     <% end %>
@@ -23,10 +24,10 @@
     <% @emergency.followups.each do |f| %>
       <ul>
           <li>
-            Created: <%= f.created_at %> 
+            Created: <%= localize_date f.created_at %> 
           </li>
           <li>
-            Updated: <%= f.updated_at %>
+            Updated: <%= localize_date f.updated_at %>
           </li>
           <li>
             Title: <%= f.title %>

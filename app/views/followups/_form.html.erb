@@ -6,6 +6,9 @@
   </ul>
 <% end %>
 
+Date: <%= localize_date @emergency.date %>
+Place: <%= @emergency.place.name %> - <%= @emergency.place.description %>
+
 <%= form_for [@emergency, @followup] do |fo| %>
   <div>
     <%= fo.label :title %>
@@ -14,10 +17,6 @@
   <div>
     <%= fo.label :description %>
     <%= fo.text_field :description, placeholder: 'description' %>
-  </div>
-  <div>
-    <%= fo.label :emergency_id %>
-    <%= fo.select :emergency_id, Emergency.all.collect {|emergency| ["#{emergency.date} at #{emergency.place.name}", emergency.id]}  %>
   </div>
 
   <%= fo.submit "Update", class: "btn btn-default" %>
