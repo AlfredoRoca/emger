@@ -1,16 +1,17 @@
 class FollowupsController < ApplicationController
+  before_action :load_emergency
   before_action :load_followup, only: [:show, :edit, :update, :destroy]
 
   def index
-    @followups = Followup.all
+    @followups = @emergency.followups
   end
 
   def new
-    @followup = Followup.new
+    @followup = @emergency.followups.build
   end
 
   def create
-    @followup = Followup.create(followup_params)
+    @followup = @emergency.followups.build(followup_params)
     if @followup.save
       flash[:notice] = "Successfully created new follow-up..."
       redirect_to emergency_url(@followup.emergency_id)
@@ -40,11 +41,16 @@ class FollowupsController < ApplicationController
   end
 
   private
+
   def followup_params
-    params.require(:followup).permit(:title, :description, :emergency_id)
+    params.require(:followup).permit(:title, :description)
+  end
+
+  def load_emergency
+    @emergency = Emergency.find(params[:emergency_id])
   end
 
   def load_followup
-    @followup = Followup.find(params[:id])
+    @followup = @emergency.followups.find(params[:id])
   end
 end

@@ -18,9 +18,9 @@
   </ul>
 
   <h2>Follow-up</h2>
-    <%= link_to "New", new_followup_path %>
-    <% if @emergency.followups.any? %>
-        <% @emergency.followups.each do |f| %>
+  <%= link_to "New", new_emergency_followup_path(@emergency) %>
+  <% if @emergency.followups.any? %>
+    <% @emergency.followups.each do |f| %>
       <ul>
           <li>
             Created: <%= f.created_at %> 
@@ -35,13 +35,13 @@
             Description: <%= f.description %>
           </li>
           <li>
-            <%= link_to "Edit follow-up", edit_followup_path(f) %>
+            <%= link_to "Edit follow-up", edit_emergency_followup_path(@emergency, f) %>
           </li>
       </ul>
-        <% end %>
-    <% else %>
-      <p>No follow-up</p>
     <% end %>
+  <% else %>
+    <p>No follow-up</p>
+  <% end %>
 
 
 

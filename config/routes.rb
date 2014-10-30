@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
-  resources :emergencies, :scenarios, :companies, :places, :people, :followups
+  resources :emergencies do
+    resources :followups
+  end
+  resources :scenarios, :companies, :places, :people
 
   root 'login#new'
 

@@ -6,7 +6,7 @@
   </ul>
 <% end %>
 
-<%= form_for @followup do |fo| %>
+<%= form_for [@emergency, @followup] do |fo| %>
   <div>
     <%= fo.label :title %>
     <%= fo.text_field :title, placeholder: 'short title' %>

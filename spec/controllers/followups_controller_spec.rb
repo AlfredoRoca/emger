@@ -25,6 +25,7 @@ RSpec.describe FollowupsController, :type => :controller do
 
       expect(assigns(:followups)).to match_array([followup1, followup2, followup3])
     end
+
   end
 
   describe "GET new" do
@@ -41,6 +42,7 @@ RSpec.describe FollowupsController, :type => :controller do
 
       expect(response).to render_template(:new)
     end
+
   end
 
   describe "GET edit" do
@@ -65,6 +67,7 @@ RSpec.describe FollowupsController, :type => :controller do
 
       expect(assigns(:followup)).to eq(followup1)
     end
+
   end
 
   describe "GET show" do
@@ -87,6 +90,7 @@ RSpec.describe FollowupsController, :type => :controller do
 
       expect(assigns(:followup)).to eq(followup1)
     end
+    
   end
 
 end
