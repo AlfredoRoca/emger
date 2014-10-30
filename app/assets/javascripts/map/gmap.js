@@ -9,6 +9,18 @@ $(window).load(function() {
   loadScript();
 });
 
+function loadScript() {
+  console.log("map loading ...");
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp' +
+    //'&v=3.14'+
+    '&key=AIzaSyAHzuI28JBUApyQFAN14ts0bhgvUDl_1Co'+
+    '&libraries=drawing'+
+    '&callback=initialize';
+  document.body.appendChild(script);
+}
+
 function initialize() {
         
   var mapOptions = {
@@ -38,6 +50,19 @@ function initialize() {
     }).always(function() { 
       // alert("complete"); 
     });
+
+    // drop pin on click
+    google.maps.event.addListener(map, 'click', function(event) {
+      placeMarker(event.latLng);
+      });    
+
+    // open menu to operate with the pin
+    // - delete
+    // - change title
+    // - open emergency
+    google.map.event.addListener(map, 'dblclick', function(event) {
+      alert(event);
+    })    
 
 }
 
@@ -72,14 +97,12 @@ function add_click_event_listener_to_marker(marker) {
       });
 }
 
-function loadScript() {
-  console.log("map loading ...");
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp' +
-    //'&v=3.14'+
-    '&key=AIzaSyAHzuI28JBUApyQFAN14ts0bhgvUDl_1Co'+
-    '&libraries=drawing'+
-    '&callback=initialize';
-  document.body.appendChild(script);
+function placeMarker(location) {
+  var marker = new google.maps.Marker({
+      position: location,
+      draggable: true,
+      map: map,
+      title: location.toString()
+  });
+  add_click_event_listener_to_marker(marker);
 }
