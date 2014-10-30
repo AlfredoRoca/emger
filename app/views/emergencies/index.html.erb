@@ -1,5 +1,8 @@
 <h1>Emergencies</h1>
 <% if current_user %>
+
+  <%= render 'maps/map' %>
+
   <%= link_to "New", new_emergency_path %>
   <table>
     <thead>
@@ -32,8 +35,6 @@
       <% end %>
     </tbody>
   </table>
-
-  <%= render 'maps/map' %>
 
 <% else %>
   <%= render 'login/login_form' %>

@@ -3,7 +3,7 @@ class PlacesController < ApplicationController
 
   def load_pinned_places
     @places = Place.pinned
-    render :json => @place
+    render :json => @places
   end
 
   def index
