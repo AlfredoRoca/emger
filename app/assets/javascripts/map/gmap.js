@@ -3,10 +3,33 @@ var default_map_center_longitude = 1.178449;
 var default_general_zoom = 14
 var default_place_zoom = 20
 var map;
-var array_of_markers = [];
+
+// create context menu
+var menu_info = function(marker) {
+  return [
+            {
+              text: 'New place on emergency',
+              href: 'http://localhost:3000/places/new',
+              target: '_blanck'
+            },
+            {
+              text: 'Emergency Follow-up',
+              href: 'http://localhost:3000/followup/' + marker.nb.srcElement.title,
+              target: '_blanck'
+            }
+          ];
+};
+
+var menu_html = function(marker) {
+  var texto = 
+  '<a id="menu1" href=' + menu_info(marker)[0].href + '><div class="context">' + menu_info(marker)[0].text + '<\/div><\/a>' +
+  '<a id="menu2" href=' + menu_info(marker)[1].href + '><div class="context">' + menu_info(marker)[1].text + '<\/div><\/a>';
+  return texto;
+}
 
 $(window).load(function() {
   loadScript();
+  worker(); // in worker.js, to retrieve modbus data periodically
 });
 
 function loadScript() {
@@ -44,9 +67,9 @@ function initialize() {
     type: "GET",
     url: 'pinned_places',
     data_type: "json"
-  }).done(function(data,textStatus, jqXHR){
+  }).done(function(data,textStatus, jqXHR) {
       put_a_marker_in_place(data);
-    }).fail(function(jqXHR, textStatus, errorThrown){
+    }).fail(function(jqXHR, textStatus, errorThrown) {
       alert( textStatus );
     }).always(function() { 
       // alert("complete"); 
@@ -55,26 +78,24 @@ function initialize() {
     // drop pin on click
     google.maps.event.addListener(map, 'click', function(event) {
       placeMarker(event.latLng);
-      });    
-
+    });    
 }
 
 // create a map marker with the coordinates and test passed
 // var marker;
-function createMarker(coords, map, title){
-  var marker = new google.maps.Marker({
+function createMarker(coords, map, title) {
+  var marker = new google.maps.Marker( {
     position: coords,
     map: map,
     title: title
   });
   return marker;
-  // add click event listener to the markers
 }
 
 // receives the data from server as an array of places
 // creates markers for each place
-// fills the array_of_markers with each marker
-function put_a_marker_in_place(array_of_pinned_places){
+// adds events
+function put_a_marker_in_place(array_of_pinned_places) {
   var marker;
     array_of_pinned_places.forEach(function(element, index, array) {
       var coords = new google.maps.LatLng(parseFloat(element.coord_x), parseFloat(element.coord_y));
@@ -85,31 +106,35 @@ function put_a_marker_in_place(array_of_pinned_places){
 
 function add_click_event_listener_to_marker(marker) {
     google.maps.event.addListener(marker, 'click', function(event) {
-      console.log(event);
+      // console.log(event);
       // event.latLng
       // event.nb: MouseEvent
       // event.pixel
-      console.log("shift? " + (event.nb.shiftKey ? "true" : "false"));
+      // console.log("shift? " + (event.nb.shiftKey ? "true" : "false"));
         if (!event.nb.shiftKey && !event.nb.ctrlKey) {
           // when click on a marker, applies zoom and centers on it
           map.setZoom(default_place_zoom);
           map.setCenter(marker.getPosition());
           console.log("click with no buttons:");
-          console.log(event);
+          // console.log(event);
         }
         else {
-          // when click with button on a marker
-          // open menu to operate with the pin
-          // - delete
-          // - change title
-          // - open emergency
-          console.log("click with button:");
-          console.log(event);
+          // console.log("click with button:");
+          // console.log(event);
+          // removes the marker
+          marker.setMap(null);
         }
     });
 
-    google.maps.event.addListener(marker, 'rightclick', function() {
+    // when right-click on a marker
+    // open menu to operate with the pin
+    // - delete
+    // - change title
+    // - open emergency
+    google.maps.event.addListener(marker, 'rightclick', function(event, marker) {
         console.log("rightclick");
+        console.log(event);
+        showContextMenu(event);
       });
 }
 
@@ -118,7 +143,8 @@ function placeMarker(location) {
       position: location,
       draggable: true,
       map: map,
-      title: location.toString()
+      title: location.toString()  // TO-DO ask for a name???
   });
   add_click_event_listener_to_marker(marker);
 }
+

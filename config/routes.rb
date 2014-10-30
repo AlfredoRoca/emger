@@ -17,5 +17,7 @@ Rails.application.routes.draw do
   delete "/logout", to: "login#destroy"
 
   get 'pinned_places' => 'places#load_pinned_places'
+  
+  get 'modbus_info' => 'modbus#modbus_info'
 
 end

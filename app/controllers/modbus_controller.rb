@@ -10,6 +10,15 @@ ONE_BASED = true # modbus address starts in 1
 
 before_action :get_params
 
+  def modbus_info
+    @modbus_info =  [
+      { name: "red", status: 1, value: 2  }, 
+      { name: "blue", status: 1, value: 2  }
+      ];
+    render :json => @modbus_info
+  end
+
+
   def read_holding_registers 
     ModBus::TCPClient.new('192.168.1.147', 502) do |cl|
       cl.with_slave(1) do |slave|
