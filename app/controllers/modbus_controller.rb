@@ -11,13 +11,31 @@ ONE_BASED = true # modbus address starts in 1
 before_action :get_params
 
   def modbus_info
-    @modbus_info =  [
-      { name: "red", status: 1, value: 2  }, 
-      { name: "blue", status: 1, value: 2  }
-      ];
+    # sample 
+    # @modbus_info =  [
+    #   { name: "East Arnoldostad", status: 2, value: 2  }, 
+    #   { name: "Jacobsmouth", status: 2, value: 2  }, 
+    #   { name: "Gaylefort", status: 3, value: 2  }
+    # ];
+    @modbus_info = create_hash_with_registers
     render :json => @modbus_info
   end
 
+  def create_hash_with_registers
+    # the expected sequence of registers is, by place
+    # status, analog value, boolean condition, place_id
+    # this function return an array of hashes
+
+    # simulation without plc for 3 places
+    @registers = %w{ 0 45 1 4 0 67 0 2 0 234 0 10}
+    
+    result = []
+    until @registers.empty? do
+      set = @registers.slice!(0,4)
+      result << { name: Place.find(set[3]).name, status: set[0], value: set[1], condition: set[2] }
+    end
+    return result
+  end
 
   def read_holding_registers 
     ModBus::TCPClient.new('192.168.1.147', 502) do |cl|
@@ -25,6 +43,8 @@ before_action :get_params
         @registers = slave.read_holding_registers @first, @quantity
         flash[:notice] = "Successfully read registers..."
         @first += (ONE_BASED ? 1 : 0)
+        # TO-DO detects and create new emergency
+        # create the hash to expose through def "modbus_info"
         render :show_modbus_read_values
       end
     end

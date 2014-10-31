@@ -3,6 +3,7 @@ var default_map_center_longitude = 1.178449;
 var default_general_zoom = 14
 var default_place_zoom = 20
 var map;
+var ROOT_URL = 'http://localhost:3000';
 
 // create context menu
 var menu_info = function(marker) {
@@ -37,7 +38,6 @@ function loadScript() {
   var script = document.createElement('script');
   script.type = 'text/javascript';
   script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp' +
-    //'&v=3.14'+
     '&key=AIzaSyAHzuI28JBUApyQFAN14ts0bhgvUDl_1Co'+
     '&libraries=drawing'+
     '&callback=initialize';
@@ -67,12 +67,17 @@ function initialize() {
     type: "GET",
     url: 'pinned_places',
     data_type: "json"
-  }).done(function(data,textStatus, jqXHR) {
-      put_a_marker_in_place(data);
+
+    }).done(function(data, textStatus, jqXHR) {
+      console.log("GET pinned_places...")
+      // drop_pins(data);
+
     }).fail(function(jqXHR, textStatus, errorThrown) {
       alert( textStatus );
+
     }).always(function() { 
       // alert("complete"); 
+
     });
 
     // drop pin on click
@@ -87,6 +92,7 @@ function createMarker(coords, map, title) {
   var marker = new google.maps.Marker( {
     position: coords,
     map: map,
+    // icon: 'map-pin-green.png',
     title: title
   });
   return marker;
@@ -95,13 +101,17 @@ function createMarker(coords, map, title) {
 // receives the data from server as an array of places
 // creates markers for each place
 // adds events
-function put_a_marker_in_place(array_of_pinned_places) {
-  var marker;
+function drop_pins(array_of_pinned_places) {
     array_of_pinned_places.forEach(function(element, index, array) {
-      var coords = new google.maps.LatLng(parseFloat(element.coord_x), parseFloat(element.coord_y));
-      marker = createMarker(coords, map, element.name);
-      add_click_event_listener_to_marker(marker);
+      drop_a_pin(element);
     });
+}
+
+function drop_a_pin(place) {
+  var marker;
+  var coords = new google.maps.LatLng(parseFloat(place.coord_x), parseFloat(place.coord_y));
+  marker = createMarker(coords, map, place.name);
+  add_click_event_listener_to_marker(marker);
 }
 
 function add_click_event_listener_to_marker(marker) {

@@ -6,6 +6,12 @@ class PlacesController < ApplicationController
     render :json => @places
   end
 
+  def send_place_by_name
+    @place = Place.find_by(name: params[:name])
+    # render text: params.inspect
+    render :json => @place
+  end
+
   def index
     @places = Place.all.order("name ASC")
   end
