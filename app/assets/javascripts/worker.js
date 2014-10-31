@@ -1,4 +1,4 @@
-(function worker() {
+function worker() {
   console.log("Entering worker...");
 
   $.ajax({
@@ -21,7 +21,7 @@
       setTimeout(worker, 5000);
 
     });
-  })();
+  };
 
 function process_modbus_info(data) {
   console.log("Processing modbus info...");

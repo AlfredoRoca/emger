@@ -22,4 +22,12 @@ Rails.application.routes.draw do
   
   get 'modbus_info'             => 'modbus#modbus_info'
 
+  # API routes
+  namespace :api do
+    namespace :v1 do
+      resources :emergencies, only: [:index]
+      get 'emergencies/all'     => 'emergencies#index_all'
+    end
+  end
+
 end

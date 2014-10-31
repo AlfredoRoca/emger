@@ -7,6 +7,7 @@ require 'rmodbus'
 IP_ADDR = '192.168.1.147'
 PORT = 502
 ONE_BASED = true # modbus address starts in 1
+STATUS_EMERGENCY = 1
 
 before_action :get_params
 
@@ -27,7 +28,7 @@ before_action :get_params
     # this function return an array of hashes
 
     # simulation without plc for 3 places
-    @registers = %w{ 0 45 1 4 0 67 0 2 1 234 0 10}
+    @registers = %w{ 0 45 1 4 0 67 0 2 0 234 0 10 1 999 1 5 }
     
     result = []
     until @registers.empty? do
@@ -43,14 +44,39 @@ before_action :get_params
         @registers = slave.read_holding_registers @first, @quantity
         flash[:notice] = "Successfully read registers..."
         @first += (ONE_BASED ? 1 : 0)
-        # TO-DO detects and create new emergency
-        # create the hash to expose through def "modbus_info"
-        render :show_modbus_read_values
+        detect_and_create_new_emergencies
+        # render :show_modbus_read_values
       end
     end
     rescue => e
     flash[:error] = "read_holding_registers [#{@first}..#{@quantity}]: #{e}" 
     render :show_modbus_read_values
+  end
+
+  def detect_and_create_new_emergencies
+    modbus_registers = @registers
+    until @modbus_registers.empty? do
+      set = @modbus_registers.slice!(0,4)
+      status    = set[0]
+      value     = set[1]
+      condition = set[2]
+      place_id  = set[3]
+      # emergency if STATUS_EMERGENCY
+      if status == STATUS_EMERGENCY
+        # check if there is any emergency open in the same place
+        unless Emergency.open.find(place_id)
+          # create a new emergency
+          emergency = Emergency.create(
+            date: Datetime::Now, 
+            status: Emergency::EMERGENCY_STATUS_OPEN,
+            simulacrum: false,
+            place_id: place_id)
+          emergency.save
+          # TODO check errors
+        end
+      end
+    end
+
   end
 
   def read_coils
