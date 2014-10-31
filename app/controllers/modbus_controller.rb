@@ -32,7 +32,7 @@ before_action :get_params
     result = []
     until @registers.empty? do
       set = @registers.slice!(0,4)
-      result << { name: Place.find(set[3]).name, status: set[0], value: set[1], condition: set[2] }
+      result << { name: Place.find(set[3]).name, status: set[0], value: set[1], condition: set[2], place_id: set[3] }
     end
     return result
   end

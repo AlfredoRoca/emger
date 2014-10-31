@@ -6,8 +6,8 @@ class PlacesController < ApplicationController
     render :json => @places
   end
 
-  def send_place_by_name
-    @place = Place.find_by(name: params[:name])
+  def send_place
+    @place = Place.find(params[:place_id])
     # render text: params.inspect
     render :json => @place
   end

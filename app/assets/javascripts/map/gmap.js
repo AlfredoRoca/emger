@@ -82,7 +82,7 @@ function initialize() {
 
     // drop a new pin when click on the map
     google.maps.event.addListener(map, 'click', function(event) {
-      createMarker(event.latLng, map, event.latLng.toString());
+      createMarker(event.latLng, map, event.latLng.toString(), true);
     });    
 }
 
@@ -96,20 +96,32 @@ function drop_pins(array_of_pinned_places) {
 }
 
 function drop_a_pin(place) {
-  var marker;
   var coords = new google.maps.LatLng(parseFloat(place.coord_x), parseFloat(place.coord_y));
-  marker = createMarker(coords, map, place.name);
+  createMarker(coords, map, place.name);
+}
+
+// create a map marker with the coordinates and test passed
+function createMarker(coords, map, title, draggable) {
+  var marker = new google.maps.Marker( {
+    position: coords,
+    draggable: draggable || false,
+    map: map,
+    // icon: 'map-pin-green.png',
+    title: title
+  });
   add_click_event_listener_to_marker(marker);
 }
 
 function add_click_event_listener_to_marker(marker) {
     google.maps.event.addListener(marker, 'click', function(event) {
-      // console.log(event);
+      console.log("add_click_event_listener_to_marker...");
+      console.log(event);
       // event.latLng
       // event.nb: MouseEvent
       // event.pixel
       // console.log("shift? " + (event.nb.shiftKey ? "true" : "false"));
-        if (!event.nb.shiftKey && !event.nb.ctrlKey) {
+        if (true) {
+        // if (!event.nb.shiftKey && !event.nb.ctrlKey) {
           // when click on a marker, applies zoom and centers on it
           map.setZoom(default_place_zoom);
           map.setCenter(marker.getPosition());
@@ -134,19 +146,5 @@ function add_click_event_listener_to_marker(marker) {
         console.log(event);
         showContextMenu(event);
       });
-}
-
-// create a map marker with the coordinates and test passed
-// var marker;
-function createMarker(coords, map, title, draggable = false) {
-  var marker = new google.maps.Marker( {
-    position: coords,
-    draggable: draggable,
-    map: map,
-    // icon: 'map-pin-green.png',
-    title: title
-  });
-  add_click_event_listener_to_marker(marker);
-  return marker;
 }
 

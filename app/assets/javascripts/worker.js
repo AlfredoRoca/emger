@@ -5,6 +5,8 @@
     type: "GET",
     url: 'modbus_info',
     data_type: "json"
+    // expected response: array of ...
+    // { name: Place.find(set[3]).name, status: set[0], value: set[1], condition: set[2], place_id: set[3] }
 
     }).done(function(data,textStatus, jqXHR) {
       console.log("GET modbus_info done");
@@ -26,25 +28,25 @@ function process_modbus_info(data) {
   data.forEach(function(element, index, array) {
     if (element.status == 1) {
       console.log("Emergency in " + element.name );
-      request_place(element.name);
+      request_place_info(element.place_id);
     }
   });
 }
 
-function request_place(name) {
-  console.log("request_place(name): name = " + name);
+function request_place_info(place_id) {
+  console.log("request_place_info(place_id): place_id = " + place_id);
   $.ajax({
     type: "GET",
-    url: 'place_by_name/' + name,
+    url: 'place/' + place_id,
     data_type: "json"
 
     }).done(function(data,textStatus, jqXHR) {
-      console.log("GET place_by_name: ");
+      console.log("GET request_place_info: ");
       console.log(data);
       drop_a_pin(data);
 
     }).fail(function(jqXHR, textStatus, errorThrown) {
-      alert( "GET place_by_name => " + textStatus );
+      console.log( "GET request_place_info => " + textStatus );
 
     }).always(function() { 
       // alert("complete"); 
