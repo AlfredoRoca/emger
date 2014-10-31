@@ -63,39 +63,27 @@ function initialize() {
   // request the places with coordinates
   // put a pin in every place 
   // add click event listener to the markers
-  $.ajax({
-    type: "GET",
-    url: 'pinned_places',
-    data_type: "json"
+  // $.ajax({
+  //   type: "GET",
+  //   url: 'pinned_places',
+  //   data_type: "json"
 
-    }).done(function(data, textStatus, jqXHR) {
-      console.log("GET pinned_places...")
-      // drop_pins(data);
+  //   }).done(function(data, textStatus, jqXHR) {
+  //     console.log("GET pinned_places...")
+  //     // drop_pins(data);
 
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-      alert( textStatus );
+  //   }).fail(function(jqXHR, textStatus, errorThrown) {
+  //     alert( textStatus );
 
-    }).always(function() { 
-      // alert("complete"); 
+  //   }).always(function() { 
+  //     // alert("complete"); 
 
-    });
+  //   });
 
-    // drop pin on click
+    // drop a new pin when click on the map
     google.maps.event.addListener(map, 'click', function(event) {
-      placeMarker(event.latLng);
+      createMarker(event.latLng, map, event.latLng.toString());
     });    
-}
-
-// create a map marker with the coordinates and test passed
-// var marker;
-function createMarker(coords, map, title) {
-  var marker = new google.maps.Marker( {
-    position: coords,
-    map: map,
-    // icon: 'map-pin-green.png',
-    title: title
-  });
-  return marker;
 }
 
 // receives the data from server as an array of places
@@ -148,13 +136,17 @@ function add_click_event_listener_to_marker(marker) {
       });
 }
 
-function placeMarker(location) {
-  var marker = new google.maps.Marker({
-      position: location,
-      draggable: true,
-      map: map,
-      title: location.toString()  // TO-DO ask for a name???
+// create a map marker with the coordinates and test passed
+// var marker;
+function createMarker(coords, map, title, draggable = false) {
+  var marker = new google.maps.Marker( {
+    position: coords,
+    draggable: draggable,
+    map: map,
+    // icon: 'map-pin-green.png',
+    title: title
   });
   add_click_event_listener_to_marker(marker);
+  return marker;
 }
 

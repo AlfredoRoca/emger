@@ -27,7 +27,7 @@ before_action :get_params
     # this function return an array of hashes
 
     # simulation without plc for 3 places
-    @registers = %w{ 0 45 1 4 0 67 0 2 0 234 0 10}
+    @registers = %w{ 0 45 1 4 0 67 0 2 1 234 0 10}
     
     result = []
     until @registers.empty? do
