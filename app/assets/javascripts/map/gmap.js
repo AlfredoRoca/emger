@@ -83,7 +83,9 @@ function initialize() {
 
   // drop a new pin when click on the map
   google.maps.event.addListener(map, 'click', function(event) {
-    createMarker(event.latLng, event.latLng.toString(), true);
+    // TODO create a new palce to pass the palce.id to createMarker
+    var place_id = 0
+    createMarker(event.latLng, event.latLng.toString(), true, place_id);
   });    
 };
 
@@ -98,11 +100,11 @@ function drop_pins(array_of_pinned_places) {
 
 function drop_a_pin(place) {
   var coords = new google.maps.LatLng(parseFloat(place.coord_x), parseFloat(place.coord_y));
-  createMarker(coords, place.name, false);
+  createMarker(coords, place.name, false, place.id);
 };
 
 // create a map marker with the coordinates and test passed
-function createMarker(coords, title, draggable) {
+function createMarker(coords, title, draggable, place_id) {
   var marker = new google.maps.Marker( {
     position: coords,
     draggable: draggable,
@@ -110,35 +112,19 @@ function createMarker(coords, title, draggable) {
     // icon: 'map-pin-green.png',
     title: title
   });
-  add_click_event_listener_to_marker(marker);
+  add_click_event_listener_to_marker(marker, place_id);
 };
 
-var contentString = '<div id="content">'+
-      '<div id="siteNotice">'+
-      '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-      '<div id="bodyContent">'+
-      '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-      'sandstone rock formation in the southern part of the '+
-      'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-      'south west of the nearest large town, Alice Springs; 450&#160;km '+
-      '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-      'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-      'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-      'Aboriginal people of the area. It has many springs, waterholes, '+
-      'rock caves and ancient paintings. Uluru is listed as a World '+
-      'Heritage Site.</p>'+
-      '<p>Attribution: Uluru, <a href="http://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-      'http://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-      '(last visited June 22, 2009).</p>'+
-      '</div>'+
-      '</div>';
+var contentString = function(title, text, place_id) {
+  return '<div id="infoWindowContent">' +
+          '<h1 id="firstHeading" class="firstHeading">' + title + '</h1>' +
+          '<div id="bodyContent">'+
+            '<p>' + text + '<a href="' + ROOT_URL + '/places/' + place_id + '"> More info</a> '+
+          '</div>' +
+        '</div>';
+};
 
-var infowindow = new google.maps.InfoWindow({
-      content: contentString
-  });
-
-function add_click_event_listener_to_marker(marker) {
+function add_click_event_listener_to_marker(marker, place_id) {
   google.maps.event.addListener(marker, 'click', function(event) {
     console.log("add_click_event_listener_to_marker...");
     console.log(event);
@@ -152,15 +138,12 @@ function add_click_event_listener_to_marker(marker) {
         map.setZoom(default_place_zoom);
         map.setCenter(marker.getPosition());
 
-
-        // infowindow.open(map, marker);
         if (!this.getMap()._infoWindow) {
           this.getMap()._infoWindow = new google.maps.InfoWindow();
         }
         this.getMap()._infoWindow.close();
-        this.getMap()._infoWindow.setContent(contentString);
+        this.getMap()._infoWindow.setContent(contentString(marker.title, "esto es una pruebad e infowindow", place_id));
         this.getMap()._infoWindow.open(this.getMap(), this);
-
 
         console.log("click with no buttons:");
         // console.log(event);

@@ -43,7 +43,7 @@ function request_place_info(place_id) {
     }).done(function(data,textStatus, jqXHR) {
       console.log("GET request_place_info: ");
       console.log(data);
-      drop_a_pin(data);
+      drop_a_pin(data, place_id);
 
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log( "GET request_place_info => " + textStatus );
