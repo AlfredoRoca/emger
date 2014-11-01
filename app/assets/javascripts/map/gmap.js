@@ -4,29 +4,7 @@ var default_general_zoom = 14
 var default_place_zoom = 20
 var map;
 var ROOT_URL = 'http://localhost:3000';
-
-// create context menu
-var menu_info = function(marker) {
-  return [
-            {
-              text: 'New place on emergency',
-              href: 'http://localhost:3000/places/new',
-              target: '_blanck'
-            },
-            {
-              text: 'Emergency Follow-up',
-              href: 'http://localhost:3000/followup/' + marker.nb.srcElement.title,
-              target: '_blanck'
-            }
-          ];
-};
-
-var menu_html = function(marker) {
-  var texto = 
-  '<a id="menu1" href=' + menu_info(marker)[0].href + '><div class="context">' + menu_info(marker)[0].text + '<\/div><\/a>' +
-  '<a id="menu2" href=' + menu_info(marker)[1].href + '><div class="context">' + menu_info(marker)[1].text + '<\/div><\/a>';
-  return texto;
-};
+var ROOT_API_V1_URL = 'http://localhost:3000/api/v1';
 
 $(window).load(function() {
   loadScript();
@@ -83,7 +61,8 @@ function initialize() {
 
   // drop a new pin when click on the map
   google.maps.event.addListener(map, 'click', function(event) {
-    // TODO create a new palce to pass the palce.id to createMarker
+    // TODO create a context menu to create a new place with emergency
+    // TODO create a new place to pass the place.id to createMarker
     var place_id = 0
     createMarker(event.latLng, event.latLng.toString(), true, place_id);
   });    
@@ -115,14 +94,74 @@ function createMarker(coords, title, draggable, place_id) {
   add_click_event_listener_to_marker(marker, place_id);
 };
 
-var contentString = function(title, text, place_id) {
-  return '<div id="infoWindowContent">' +
-          '<h1 id="firstHeading" class="firstHeading">' + title + '</h1>' +
-          '<div id="bodyContent">'+
-            '<p>' + text + '<a href="' + ROOT_URL + '/places/' + place_id + '"> More info</a> '+
-          '</div>' +
-        '</div>';
-};
+// html to ask for creating a new place with emergency
+// option A
+// with GET, passing lat/lng, there is the problem with decimal point
+// var contentString = function(title, place_id, lat, lng) {
+//   var html_content = 
+//         '<div id="infoWindowWrapper">' +
+//           '<h1 id="firstHeading" class="firstHeading">' + title + '</h1>' +
+//           '<div id="infoWindowContent">';
+//   if (place_id > 0) {
+//       html_content += '<p><a href="' + ROOT_URL + '/places/' + place_id + '"> More info</a></p>';
+//   }
+//   else {
+//       html_content += '<p><a href="' + ROOT_API_V1_URL + '/herenew/' + lat + '/' + lng + '"> Create new emergency here</a></p>';
+//   };
+//   html_content += '</div></div>';
+//   return html_content;
+// };
+
+
+// html to ask for creating a new place with emergency
+// option B: https://developers.google.com/maps/articles/phpsqlinfo_v3
+var contentString = function(lat, lng) {
+  var html = "<table>" +
+             "<tr><td>Place name:</td> <td><input type='text' id='place_name'/> </td> </tr>" +
+             "<tr><td>Description:</td> <td><input type='text' id='description'/></td> </tr>" +
+             "<tr><td data-lat=" + lat.toString() + " data-lng=" + lng.toString() + "></td> </tr>" +
+             "<tr><td></td><td><input type='button' value='Create new emergency here now' onclick='createNewEmergencyHere()'/></td></tr></table>";
+  return html;
+}
+
+function createNewEmergencyHere() {
+  console.log("createNewEmergencyHere...");
+  console.log("url: " + ROOT_API_V1_URL + '/herenew/');
+  var place_name = escape(document.getElementById("place_name").value);
+  var description = escape(document.getElementById("description").value);
+  // var latlng = marker.getPosition();
+  // var url = "phpsqlinfo_addrow.php?name=" + name + "&address=" + address +
+  //           "&type=" + type + "&lat=" + latlng.lat() + "&lng=" + latlng.lng();
+  // downloadUrl(url, function(data, responseCode) {
+  //   if (responseCode == 200 && data.length >= 1) {
+  //     infowindow.close();
+  //     // document.getElementById("message").innerHTML = "Location added.";
+  //     console.log("Location added.");
+  $.ajax({
+    type: "POST",
+    url: ROOT_API_V1_URL + '/herenew/',
+    data: { name: place_name,
+            description: description,
+            coord_x: 41.1, //latlng.lat(),
+            coord_y: 1.2 //latlng.lng()
+          },
+    data_type: "json"
+
+    }).done(function(data, textStatus, jqXHR) {
+      console.log("POST herenew data: ");
+      console.log(data);
+
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      alert( "ERROR POST herenew - " + textStatus );
+
+    }).always(function() { 
+      // alert("complete"); 
+
+    });
+
+}
+
+
 
 function add_click_event_listener_to_marker(marker, place_id) {
   google.maps.event.addListener(marker, 'click', function(event) {
@@ -142,7 +181,8 @@ function add_click_event_listener_to_marker(marker, place_id) {
           this.getMap()._infoWindow = new google.maps.InfoWindow();
         }
         this.getMap()._infoWindow.close();
-        this.getMap()._infoWindow.setContent(contentString(marker.title, "esto es una pruebad e infowindow", place_id));
+        var latlng = marker.getPosition();
+        this.getMap()._infoWindow.setContent(contentString(latlng.lat(), latlng.lng()));
         this.getMap()._infoWindow.open(this.getMap(), this);
 
         console.log("click with no buttons:");
@@ -156,15 +196,5 @@ function add_click_event_listener_to_marker(marker, place_id) {
       };
   });
 
-  // when right-click on a marker
-  // open menu to operate with the pin
-  // - delete
-  // - change title
-  // - open emergency
-  google.maps.event.addListener(marker, 'rightclick', function(event, marker) {
-      console.log("rightclick");
-      console.log(event);
-      showContextMenu(event);
-    });
 };
 

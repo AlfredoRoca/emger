@@ -26,7 +26,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :emergencies, only: [:index]
-      get 'emergencies/all'     => 'emergencies#index_all'
+      get  'emergencies/all'    => 'emergencies#index_all'
+      post 'herenew'            => 'emergencies#here'
     end
   end
 
