@@ -3,25 +3,38 @@ module Api
     class EmergenciesController < ApplicationController
 
       def index
-        emergencies = Emergency.open.order("date ASC")
+        emergencies = Emergency.open.order("date DESC")
         render json: emergencies
       end
 
       def index_all
-        emergencies = Emergency.all.order("date ASC, status ASC")
+        emergencies = Emergency.all.order("date DESC, status ASC")
         render json: emergencies
       end
 
       def here
-        place = Place.new(place_params)
-        place.save
-        emergency = Emergency.create()
-          emergency.status      = Emergency::EMERGENCY_STATUS_OPEN
-          emergency.place_id    = place.id
-          emergency.date        = Datetime.now
-          emergency.simulacrum  = false
-        emergency.save
-        render json: {"place" => place, "emergency" => emergency}
+        place = Place.create()
+          place.name = params[:name]
+          place.description = params[:description]
+          place.coord_x = params[:coord_x]
+          place.coord_y = params[:coord_y]
+        if place.save
+          emergency = Emergency.create()
+            emergency.status      = Emergency::EMERGENCY_STATUS_OPEN
+            emergency.place_id    = place.id
+            emergency.date        = DateTime::now
+            emergency.simulacrum  = false
+          if emergency.save
+            response = {"place" => place, "emergency" => emergency}
+          else
+            response = "Error saving new emergency. Params: #{params}"
+            status   = 451
+          end
+        else
+          response = "Error saving new place. Params: #{params}"
+          status   =  450
+        end
+          render json: response
       end
 
       private

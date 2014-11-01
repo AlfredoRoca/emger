@@ -28,7 +28,7 @@ before_action :get_params
     # this function return an array of hashes
 
     # simulation without plc for 3 places
-    @registers = %w{ 1 45 1 4 0 67 0 2 0 234 0 10 1 999 1 5 }
+    @registers = %w{ 1 45 1 4 1 67 0 2 0 234 0 10 1 999 1 5 }
     
     result = []
     until @registers.empty? do
@@ -67,7 +67,7 @@ before_action :get_params
         unless Emergency.open.find(place_id)
           # create a new emergency
           emergency = Emergency.create(
-            date: Datetime::Now, 
+            date: DateTime::now, 
             status: Emergency::EMERGENCY_STATUS_OPEN,
             simulacrum: false,
             place_id: place_id)

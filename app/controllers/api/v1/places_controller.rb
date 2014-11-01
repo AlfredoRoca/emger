@@ -8,12 +8,17 @@ module Api
       end
 
       def one_place_by_id
-        place = Place.find(params[:place_id])
+        place = Place.find(params[:id])
         render json: place
       end
 
       def index
         places = Place.all.order("name ASC")
+        render json: places
+      end
+
+      def index_order_by_id
+        places = Place.all.order("id DESC")
         render json: places
       end
 

@@ -61,21 +61,18 @@ function initialize() {
 
   // drop a new pin when click on the map
   google.maps.event.addListener(map, 'click', function(event) {
-    // TODO create a context menu to create a new place with emergency
-    // TODO create a new place to pass the place.id to createMarker
-    var place_id = 0
-    createMarker(event.latLng, event.latLng.toString(), true, place_id);
+    createMarker(event.latLng, event.latLng.toString(), true, 0);
   });    
 };
 
 // receives the data from server as an array of places
 // creates markers for each place
 // adds events
-function drop_pins(array_of_pinned_places) {
-    array_of_pinned_places.forEach(function(element, index, array) {
-      drop_a_pin(element);
-    });
-};
+// function drop_pins(array_of_pinned_places) {
+//     array_of_pinned_places.forEach(function(element, index, array) {
+//       drop_a_pin(element);
+//     });
+// };
 
 function drop_a_pin(place) {
   var coords = new google.maps.LatLng(parseFloat(place.coord_x), parseFloat(place.coord_y));
@@ -84,6 +81,8 @@ function drop_a_pin(place) {
 
 // create a map marker with the coordinates and test passed
 function createMarker(coords, title, draggable, place_id) {
+  // if place_id = 0 means that comes from a click on the map, ie, new emergency
+  // if place_id > 0 means that is a new automatic emergency
   var marker = new google.maps.Marker( {
     position: coords,
     draggable: draggable,
@@ -94,56 +93,42 @@ function createMarker(coords, title, draggable, place_id) {
   add_click_event_listener_to_marker(marker, place_id);
 };
 
-// html to ask for creating a new place with emergency
-// option A
-// with GET, passing lat/lng, there is the problem with decimal point
-// var contentString = function(title, place_id, lat, lng) {
-//   var html_content = 
-//         '<div id="infoWindowWrapper">' +
-//           '<h1 id="firstHeading" class="firstHeading">' + title + '</h1>' +
-//           '<div id="infoWindowContent">';
-//   if (place_id > 0) {
-//       html_content += '<p><a href="' + ROOT_URL + '/places/' + place_id + '"> More info</a></p>';
-//   }
-//   else {
-//       html_content += '<p><a href="' + ROOT_API_V1_URL + '/herenew/' + lat + '/' + lng + '"> Create new emergency here</a></p>';
-//   };
-//   html_content += '</div></div>';
-//   return html_content;
-// };
-
-
-// html to ask for creating a new place with emergency
-// option B: https://developers.google.com/maps/articles/phpsqlinfo_v3
-var contentString = function(lat, lng) {
+// html to ask for info to create a new place with emergency
+// source: https://developers.google.com/maps/articles/phpsqlinfo_v3
+var contentFormString = function(lat, lng) {
   var html = "<table>" +
-             "<tr><td>Place name:</td> <td><input type='text' id='place_name'/> </td> </tr>" +
-             "<tr><td>Description:</td> <td><input type='text' id='description'/></td> </tr>" +
-             "<tr><td data-lat=" + lat.toString() + " data-lng=" + lng.toString() + "></td> </tr>" +
+             "<tr><td>Place name:</td> <td><input id='place_name' type='text'/> </td> </tr>" +
+             "<tr><td>Description:</td> <td><input id='description' type='text'/></td> </tr>" +
+             "<tr><td id='dataset' data-lat=" + lat.toString() + " data-lng=" + lng.toString() + "></td> </tr>" +
              "<tr><td></td><td><input type='button' value='Create new emergency here now' onclick='createNewEmergencyHere()'/></td></tr></table>";
+  return html;
+};
+
+var contentInfoString = function(name, description, place_id) {
+  var html = "<table>" +
+             "<tr><td>Place name: " + name + "</td> </tr>" +
+             "<tr><td>Description: " + description + "</td> </tr>" +
+             "<tr><td><a href='" + ROOT_URL + "/places/" + place_id + "'>More info</a></td> </tr>" +
+             "</table>";
   return html;
 }
 
 function createNewEmergencyHere() {
   console.log("createNewEmergencyHere...");
   console.log("url: " + ROOT_API_V1_URL + '/herenew/');
-  var place_name = escape(document.getElementById("place_name").value);
-  var description = escape(document.getElementById("description").value);
-  // var latlng = marker.getPosition();
-  // var url = "phpsqlinfo_addrow.php?name=" + name + "&address=" + address +
-  //           "&type=" + type + "&lat=" + latlng.lat() + "&lng=" + latlng.lng();
-  // downloadUrl(url, function(data, responseCode) {
-  //   if (responseCode == 200 && data.length >= 1) {
-  //     infowindow.close();
-  //     // document.getElementById("message").innerHTML = "Location added.";
-  //     console.log("Location added.");
+  var place_name        = document.getElementById("place_name");
+  var description       = document.getElementById("description");
+  var data_coordinates  = $("#dataset")[0];
+  console.log("Name: " + place_name.value + " :: Description: " + description.value);
+  console.log("data_coordinates...");
+  console.log(data_coordinates);
   $.ajax({
     type: "POST",
-    url: ROOT_API_V1_URL + '/herenew/',
-    data: { name: place_name,
-            description: description,
-            coord_x: 41.1, //latlng.lat(),
-            coord_y: 1.2 //latlng.lng()
+    url: ROOT_API_V1_URL + '/herenew',
+    data: { name:         place_name.value,
+            description:  description.value,
+            coord_x:      data_coordinates.dataset.lat,
+            coord_y:      data_coordinates.dataset.lng
           },
     data_type: "json"
 
@@ -158,12 +143,11 @@ function createNewEmergencyHere() {
       // alert("complete"); 
 
     });
-
 }
 
-
-
 function add_click_event_listener_to_marker(marker, place_id) {
+  // if place_id = 0 means that comes from a click on the map, ie, new emergency
+  // if place_id > 0 means that is a new automatic emergency
   google.maps.event.addListener(marker, 'click', function(event) {
     console.log("add_click_event_listener_to_marker...");
     console.log(event);
@@ -182,7 +166,14 @@ function add_click_event_listener_to_marker(marker, place_id) {
         }
         this.getMap()._infoWindow.close();
         var latlng = marker.getPosition();
-        this.getMap()._infoWindow.setContent(contentString(latlng.lat(), latlng.lng()));
+        if (place_id == 0) { // new emergency --> open a form to enter new info
+          this.getMap()._infoWindow.setContent(contentFormString(latlng.lat(), latlng.lng()));
+        }
+        else { // automatic emergency --> show place info
+          // params: name, description, place_id
+          // TODO request place info to fill the infoWindow
+          this.getMap()._infoWindow.setContent(contentInfoString(latlng.lat(), latlng.lng()));
+        }
         this.getMap()._infoWindow.open(this.getMap(), this);
 
         console.log("click with no buttons:");
