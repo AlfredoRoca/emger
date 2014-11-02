@@ -7,9 +7,9 @@ class EmergenciesController < ApplicationController
       format.html
       format.json { render json: @emergencies }
     end
-  endformat.
+  end
 
-  ef places
+  def places
     @emergencies = Emergency.open.map{|e| e.place}
     respond_to do |format|
       format.html

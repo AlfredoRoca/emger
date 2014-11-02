@@ -1,4 +1,6 @@
 var MODBUS_SERVER_VALUE_FOR_EMERGENCY = 1
+var MODBUS_SERVER_VALUE_FOR_CLEAR = 2
+
 function worker() {
   console.log("Entering worker...");
 
@@ -29,9 +31,10 @@ function process_modbus_info(data) {
   data.forEach(function(element, index, array) {
     if (element.status == MODBUS_SERVER_VALUE_FOR_EMERGENCY) {
       console.log("Emergency in " + element.name );
-      request_place_info(element.place_id); // and put a pin
+      request_place_info(element.place_id); 
+      // and create an emergency and put a pin
     }
-    else { 
+    if (element.status == MODBUS_SERVER_VALUE_FOR_CLEAR) {
       // close the emergency associated
       request_close_emergency(element.place_id);
     }

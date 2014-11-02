@@ -21,7 +21,7 @@ before_action :get_params
     # this function return an array of hashes
 
     # simulation without plc for 3 places
-    @registers = %w{ 1 45 1 4 1 67 0 2 1 234 0 10 1 999 1 5 }
+    @registers = %w{ 0 45 1 4 0 67 0 2 0 234 0 10 0 999 1 5 }
     
     result = []
     until @registers.empty? do
@@ -97,7 +97,7 @@ before_action :get_params
     end 
     rescue => e
     flash[:error] = "write_single_coil: #{e}" 
-    render :show_modbus_read_values
+    redirect_to emergencies_path
   end
 
   def write_single_register

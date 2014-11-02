@@ -18,6 +18,7 @@
           <th></th>
           <th></th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -30,6 +31,7 @@
               <td><%= emer.place.name if emer.place %></td>
               <td><%= emer.followups.count if emer.followups %></td>
               <td><%= link_to "Edit", edit_emergency_path(emer) %></td>
+              <td><%= link_to "Edit place", edit_place_path(emer.place_id) %></td>
               <td><%= link_to "Show", emergency_path(emer) %></td>
               <td><%= link_to "Close", close_emergency_path(emer) %></td>
               <td><%= link_to "Delete", emergency_path(emer), method: :delete,
