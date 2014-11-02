@@ -38,25 +38,27 @@ function initialize() {
   // initializing map with the above options and draws it in the page
   map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
 
-  // request the places with coordinates
+  // drop markers for open emergencies
+  // request emergencies
   // put a pin in every place 
   // add click event listener to the markers
-  // $.ajax({
-  //   type: "GET",
-  //   url: 'pinned_places',
-  //   data_type: "json"
+  $.ajax({
+    type: "GET",
+    url: "emergencies",
+    data_type: "json"
 
-  //   }).done(function(data, textStatus, jqXHR) {
-  //     console.log("GET pinned_places...")
-  //     // drop_pins(data);
+    }).done(function(data, textStatus, jqXHR) {
+      console.log("GET open emergencies...");
+      console.log(data);
+      drop_pins(data);
 
-  //   }).fail(function(jqXHR, textStatus, errorThrown) {
-  //     alert( textStatus );
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      console.log( textStatus );
 
-  //   }).always(function() { 
-  //     // alert("complete"); 
+    }).always(function() { 
+      // alert("complete"); 
 
-  //   });
+    });
 
   worker(); // in worker.js, to retrieve modbus data periodically
 
@@ -65,8 +67,11 @@ function initialize() {
     createMarker(event.latLng, event.latLng.toString(), true, 0);
   });    
 
+  // map zoom in/out
   document.onkeydown = processKeyPressed;
   // document.onkeyup = processKeyPressed;
+
+
 
 };
 
@@ -94,11 +99,11 @@ function processKeyPressed(event) {
 // receives the data from server as an array of places
 // creates markers for each place
 // adds events
-// function drop_pins(array_of_pinned_places) {
-//     array_of_pinned_places.forEach(function(element, index, array) {
-//       drop_a_pin(element);
-//     });
-// };
+function drop_pins(array_of_places) {
+    array_of_places.forEach(function(place, index, array) {
+      drop_a_pin(place);
+    });
+};
 
 function drop_a_pin(place) {
   var coords = new google.maps.LatLng(parseFloat(place.coord_x), parseFloat(place.coord_y));
@@ -142,7 +147,7 @@ var contentInfoString = function(name, description, place_id) {
 
 function createNewEmergencyHere() {
   console.log("createNewEmergencyHere...");
-  console.log("url: " + ROOT_API_V1_URL + '/herenew/');
+  console.log("url: /here_new_emergency");
   var place_name        = document.getElementById("place_name");
   var description       = document.getElementById("description");
   var data_coordinates  = $("#dataset")[0];
@@ -151,7 +156,7 @@ function createNewEmergencyHere() {
   console.log(data_coordinates);
   $.ajax({
     type: "POST",
-    url: ROOT_API_V1_URL + '/here_new_emergency',
+    url: '/here_new_emergency',
     data: { name:         place_name.value,
             description:  description.value,
             coord_x:      data_coordinates.dataset.lat,

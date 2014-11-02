@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   delete "/logout", to: "login#destroy"
 
   get 'emergency_close/:id'     => 'emergencies#close', as: :close_emergency
+  post 'here_new_emergency'     => 'emergencies#here_new_emergency'
 
   get 'modbus_read_reg'         => 'modbus#read_holding_registers'
   get 'modbus_read_coil'        => 'modbus#read_coils'
@@ -25,13 +26,18 @@ Rails.application.routes.draw do
   # API routes
   namespace :api do
     namespace :v1 do
-      resources :emergencies, only: [:index]
-      resources :places, only: [:index]
-      get  'emergencies/all'    => 'emergencies#index_all'
-      post 'here_new_emergency' => 'emergencies#here_new_emergency'
-      get  'places/pinned'      => 'places#only_pinned_places'
-      get  'places/:id'         => 'places#one_place_by_id'
-      get  'places_order_by_id' => 'places#index_order_by_id'
+      resources :emergencies, only: [:index] do
+        collection do
+          get  'all'    # => 'emergencies#all'
+        end
+      end
+
+      resources :places, only: [:index, :show] do
+        collection do
+          get 'pinned'      # => 'places#pinned'
+          get 'order_by_id' # => 'places#order_by_id'
+        end
+      end
     end
   end
 

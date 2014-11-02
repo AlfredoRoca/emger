@@ -3,6 +3,10 @@ class EmergenciesController < ApplicationController
 
   def index
     @emergencies = Emergency.open.order("date DESC")
+    respond_to do |format|
+      format.html
+      format.json { @emergencies }
+    end
   end
 
   def edit
@@ -50,6 +54,31 @@ class EmergenciesController < ApplicationController
     @emergency.destroy
     flash[:notice] = "Successfully deleted..."
     redirect_to emergencies_url
+  end
+
+  def here_new_emergency
+    place = Place.create()
+      place.name = params[:name]
+      place.description = params[:description]
+      place.coord_x = params[:coord_x]
+      place.coord_y = params[:coord_y]
+    if place.save
+      emergency = Emergency.create()
+        emergency.status      = Emergency::EMERGENCY_STATUS_OPEN
+        emergency.place_id    = place.id
+        emergency.date        = DateTime::now
+        emergency.simulacrum  = false
+      if emergency.save
+        response = {"place" => place, "emergency" => emergency}
+      else
+        response = "Error saving new emergency. Params: #{params}"
+        status   = 451
+      end
+    else
+      response = "Error saving new place: #{place.errors.full_messages.each{|msg| msg}}"
+      status   =  450
+    end
+      render json: response
   end
 
   private
