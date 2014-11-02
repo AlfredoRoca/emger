@@ -7,9 +7,9 @@ class EmergenciesController < ApplicationController
       format.html
       format.json { render json: @emergencies }
     end
-  end
+  endformat.
 
-  def places
+  ef places
     @emergencies = Emergency.open.map{|e| e.place}
     respond_to do |format|
       format.html
@@ -40,9 +40,7 @@ class EmergenciesController < ApplicationController
   def close
     if @emergency.update(status: Emergency::EMERGENCY_STATUS_CLOSED)
       flash[:notice] = "Emergency successfully closed..."
-      respond_to do |format|
-        html: redirect_to write_clear_in_plc_url
-        json: render
+      redirect_to write_clear_in_plc_url
     else
       flash[:error] = "Impossible to close the emergency. Review the errors..."
       render :show
@@ -55,15 +53,16 @@ class EmergenciesController < ApplicationController
       flash[:notice] = "Emergency successfully closed..."
       @place = @emergency.place
       respond_to do |format|
-        html: redirect_to write_clear_in_plc_url
+        format.html redirect_to write_clear_in_plc_url
         response = {"place" => @place, "emergency" => @emergency}
-        json: { render json: response }
+        format.json { render json: response }
       end
     else
       flash[:error] = "Impossible to close the emergency. Review the errors..."
       respond_to do |format|
-        html: render :show
-        json: { render json: "Impossible to close the emergency." }
+        format.html render :show
+        format.json { render json: "Impossible to close the emergency." }
+      end
     end
   end
   def create
