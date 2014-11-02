@@ -2,6 +2,10 @@ Rails.application.routes.draw do
 
   resources :emergencies do
     resources :followups
+    collection do
+      get  'places'     # => 'emergencies#places'
+      post 'here_new'   # => 'emergencies#here_new_emergency'
+    end
   end
   resources :scenarios, :companies, :places, :people
 
@@ -11,7 +15,6 @@ Rails.application.routes.draw do
   delete "/logout", to: "login#destroy"
 
   get 'emergency_close/:id'     => 'emergencies#close', as: :close_emergency
-  post 'here_new_emergency'     => 'emergencies#here_new_emergency'
 
   get 'modbus_read_reg'         => 'modbus#read_holding_registers'
   get 'modbus_read_coil'        => 'modbus#read_coils'
@@ -28,7 +31,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :emergencies, only: [:index] do
         collection do
-          get  'all'    # => 'emergencies#all'
+          get  'all'      # => 'emergencies#all'
+          get  'places'   # => 'emergencies#places'
         end
       end
 

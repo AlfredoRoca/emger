@@ -5,7 +5,15 @@ class EmergenciesController < ApplicationController
     @emergencies = Emergency.open.order("date DESC")
     respond_to do |format|
       format.html
-      format.json { @emergencies }
+      format.json { render json: @emergencies }
+    end
+  end
+
+  def places
+    @emergencies = Emergency.open.map{|e| e.place}
+    respond_to do |format|
+      format.html
+      format.json { render json: @emergencies }
     end
   end
 

@@ -44,8 +44,8 @@ function initialize() {
   // add click event listener to the markers
   $.ajax({
     type: "GET",
-    url: "emergencies",
-    data_type: "json"
+    url: "emergencies/places",
+    dataType: "json"
 
     }).done(function(data, textStatus, jqXHR) {
       console.log("GET open emergencies...");
@@ -64,14 +64,12 @@ function initialize() {
 
   // drop a new pin when click on the map
   google.maps.event.addListener(map, 'click', function(event) {
-    createMarker(event.latLng, event.latLng.toString(), true, 0);
+    createMarker(event.latLng, "Emergency place", true, 0);
   });    
 
   // map zoom in/out
   document.onkeydown = processKeyPressed;
   // document.onkeyup = processKeyPressed;
-
-
 
 };
 
@@ -100,12 +98,16 @@ function processKeyPressed(event) {
 // creates markers for each place
 // adds events
 function drop_pins(array_of_places) {
+  // if (array_of_places && array_of_places.isArray()) {
     array_of_places.forEach(function(place, index, array) {
       drop_a_pin(place);
     });
+  // }
 };
 
 function drop_a_pin(place) {
+  console.log("Entering drop_a_pin...");
+  console.log(place);
   var coords = new google.maps.LatLng(parseFloat(place.coord_x), parseFloat(place.coord_y));
   createMarker(coords, place.name, false, place.id);
 };
@@ -119,7 +121,7 @@ function createMarker(coords, title, draggable, place_id) {
     draggable: draggable,
     map: map,
     // icon: 'map-pin-green.png',
-    title: title
+    title: title + " (" + place_id.toString() + ")"
   });
   add_click_event_listener_to_marker(marker, place_id);
 };
@@ -156,13 +158,13 @@ function createNewEmergencyHere() {
   console.log(data_coordinates);
   $.ajax({
     type: "POST",
-    url: '/here_new_emergency',
+    url: 'emergencies/here_new',
     data: { name:         place_name.value,
             description:  description.value,
             coord_x:      data_coordinates.dataset.lat,
             coord_y:      data_coordinates.dataset.lng
           },
-    data_type: "json"
+    dataType: "json"
 
     }).done(function(data, textStatus, jqXHR) {
       console.log("POST herenew data: ");

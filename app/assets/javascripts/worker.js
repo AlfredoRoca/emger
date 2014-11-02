@@ -1,10 +1,11 @@
+var MODBUS_SERVER_VALUE_FOR_EMERGENCY = 1
 function worker() {
   console.log("Entering worker...");
 
   $.ajax({
     type: "GET",
     url: 'modbus_info',
-    data_type: "json"
+    dataType: "json"
     // expected response: array of ...
     // { name: Place.find(set[3]).name, status: set[0], value: set[1], condition: set[2], place_id: set[3] }
 
@@ -26,7 +27,7 @@ function worker() {
 function process_modbus_info(data) {
   console.log("Processing modbus info...");
   data.forEach(function(element, index, array) {
-    if (element.status == 1) {
+    if (element.status == MODBUS_SERVER_VALUE_FOR_EMERGENCY) {
       console.log("Emergency in " + element.name );
       request_place_info(element.place_id);
     }
@@ -38,12 +39,12 @@ function request_place_info(place_id) {
   $.ajax({
     type: "GET",
     url: 'place/' + place_id,
-    data_type: "json"
+    dataType: "json"
 
     }).done(function(data,textStatus, jqXHR) {
       console.log("GET request_place_info: ");
       console.log(data);
-      drop_a_pin(data, place_id);
+      drop_a_pin(data);
 
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log( "GET request_place_info => " + textStatus );
