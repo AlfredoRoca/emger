@@ -1,10 +1,11 @@
 var default_map_center_latitude = 41.105844;
 var default_map_center_longitude = 1.178449;
-var default_general_zoom = 14
+var default_general_zoom = 15
 var default_place_zoom = 20
 var map;
 var ROOT_URL = 'http://localhost:3000';
 var ROOT_API_V1_URL = 'http://localhost:3000/api/v1';
+var current_zoom;
 
 $(window).load(function() {
   loadScript();
@@ -63,7 +64,32 @@ function initialize() {
   google.maps.event.addListener(map, 'click', function(event) {
     createMarker(event.latLng, event.latLng.toString(), true, 0);
   });    
+
+  document.onkeydown = processKeyPressed;
+  // document.onkeyup = processKeyPressed;
+
 };
+
+// zoom in/out when the Z/A key is pressed
+var ctrlPressed = false;
+function processKeyPressed(event) {
+  ctrlPressed = event.ctrlKey;
+  keyZPressed = event.keyCode == 90;
+  keyAPressed = event.keyCode == 65;
+  zoomInKey   = ctrlPressed && keyZPressed;
+  zoomOutKey  = ctrlPressed && keyAPressed;
+  // console.log("key event...");
+  // console.log(event);
+  // console.log(ctrlPressed && keyZPressed);
+  if (zoomInKey) {
+    current_zoom = map.getZoom();
+    map.setOptions({zoom: current_zoom + 1});
+  }
+  if (zoomOutKey) {
+    current_zoom = map.getZoom();
+    map.setOptions({zoom: current_zoom - 1});
+  }
+}
 
 // receives the data from server as an array of places
 // creates markers for each place
@@ -97,6 +123,7 @@ function createMarker(coords, title, draggable, place_id) {
 // source: https://developers.google.com/maps/articles/phpsqlinfo_v3
 var contentFormString = function(lat, lng) {
   var html = "<table>" +
+             "<tr><td>Request status:</td> <td id='xhrStatus'></td></tr>" +
              "<tr><td>Place name:</td> <td><input id='place_name' type='text'/> </td> </tr>" +
              "<tr><td>Description:</td> <td><input id='description' type='text'/></td> </tr>" +
              "<tr><td id='dataset' data-lat=" + lat.toString() + " data-lng=" + lng.toString() + "></td> </tr>" +
@@ -124,7 +151,7 @@ function createNewEmergencyHere() {
   console.log(data_coordinates);
   $.ajax({
     type: "POST",
-    url: ROOT_API_V1_URL + '/herenew',
+    url: ROOT_API_V1_URL + '/here_new_emergency',
     data: { name:         place_name.value,
             description:  description.value,
             coord_x:      data_coordinates.dataset.lat,
@@ -135,9 +162,17 @@ function createNewEmergencyHere() {
     }).done(function(data, textStatus, jqXHR) {
       console.log("POST herenew data: ");
       console.log(data);
+      document.getElementById("xhrStatus").innerHTML = "New place created";
+      // TODO change marker title by new place name
 
     }).fail(function(jqXHR, textStatus, errorThrown) {
-      alert( "ERROR POST herenew - " + textStatus );
+      console.log( "ERROR POST herenew - " + textStatus );
+      // validation denied respond with status codes
+      // response = "Error saving new emergency. Params: #{params}"
+      // status   = 451
+      // response = "Error saving new place. Params: #{params}"
+      // status   =  450
+      document.getElementById("xhrStatus").innerHTML = jqXHR.responseText;
 
     }).always(function() { 
       // alert("complete"); 

@@ -12,7 +12,7 @@ module Api
         render json: emergencies
       end
 
-      def here
+      def here_new_emergency
         place = Place.create()
           place.name = params[:name]
           place.description = params[:description]
@@ -31,7 +31,7 @@ module Api
             status   = 451
           end
         else
-          response = "Error saving new place. Params: #{params}"
+          response = "Error saving new place: #{place.errors.full_messages.each{|msg| msg}}"
           status   =  450
         end
           render json: response

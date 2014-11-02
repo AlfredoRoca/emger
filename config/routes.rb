@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       resources :emergencies, only: [:index]
       resources :places, only: [:index]
       get  'emergencies/all'    => 'emergencies#index_all'
-      post 'herenew'            => 'emergencies#here'
+      post 'here_new_emergency' => 'emergencies#here_new_emergency'
       get  'places/pinned'      => 'places#only_pinned_places'
       get  'places/:id'         => 'places#one_place_by_id'
       get  'places_order_by_id' => 'places#index_order_by_id'
