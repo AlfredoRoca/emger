@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :place do
     name { Faker::Name.name }
     description { Faker::Lorem.sentence(3) }
-    coord_x { "42.44554545"}
-    coord_y { "2.3245345" }
+    coord_x { Random.new.rand(41098208..41112436)/1000000 }
+    coord_y { Random.new.rand(156760..1198602)/1000000 }
   end
 end

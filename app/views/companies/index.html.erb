@@ -8,7 +8,6 @@
         <th>Activity</th>
         <th>Phone1</th>
         <th>email</th>
-        <th>Emergencies</th>
         <th></th>
         <th></th>
         <th></th>
@@ -21,7 +20,6 @@
           <td><%= co.activity %></td>
           <td><%= co.phone1 %></td>
           <td><%= co.email %></td>
-          <td><%= co.emergencies.count %></td>
           <td><%= link_to "Edit", edit_company_path(co) %></td>
           <td><%= link_to "Show", company_path(co) %></td>
           <td><%= link_to "Delete", company_path(co), method: :delete,

@@ -6,6 +6,8 @@ var map;
 var ROOT_URL = 'http://localhost:3000';
 var ROOT_API_V1_URL = 'http://localhost:3000/api/v1';
 var current_zoom;
+var keyZ = 90;
+var keyQ = 81;
 
 $(window).load(function() {
   loadScript();
@@ -50,7 +52,7 @@ function initialize() {
     }).done(function(data, textStatus, jqXHR) {
       console.log("GET open emergencies...");
       console.log(data);
-      drop_pins(data);
+      drop_pins(data, customIcons.blue.icon);
 
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log( textStatus );
@@ -64,7 +66,7 @@ function initialize() {
 
   // drop a new pin when click on the map
   google.maps.event.addListener(map, 'click', function(event) {
-    createMarker(event.latLng, "Emergency place", true, 0);
+    createMarker(event.latLng, "Emergency place", true, 0, customIcons.blue.icon);
   });    
 
   // map zoom in/out
@@ -73,14 +75,13 @@ function initialize() {
 
 };
 
-// zoom in/out when the Z/A key is pressed
+// zoom in/out when the Z/Q key are pressed
 var ctrlPressed = false;
 function processKeyPressed(event) {
   ctrlPressed = event.ctrlKey;
-  keyZPressed = event.keyCode == 90;
-  keyAPressed = event.keyCode == 65;
-  zoomInKey   = ctrlPressed && keyZPressed;
-  zoomOutKey  = ctrlPressed && keyAPressed;
+  var keyPressed = event.keyCode,
+  zoomInKey   = ctrlPressed && keyPressed == keyZ;
+  zoomOutKey  = ctrlPressed && keyPressed == keyQ;
   // console.log("key event...");
   // console.log(event);
   // console.log(ctrlPressed && keyZPressed);
@@ -97,30 +98,30 @@ function processKeyPressed(event) {
 // receives the data from server as an array of places
 // creates markers for each place
 // adds events
-function drop_pins(array_of_places) {
+function drop_pins(array_of_places, icon) {
   // if (array_of_places && array_of_places.isArray()) {
     array_of_places.forEach(function(place, index, array) {
-      drop_a_pin(place);
+      drop_a_pin(place, icon);
     });
   // }
 };
 
-function drop_a_pin(place) {
+function drop_a_pin(place, icon) {
   console.log("Entering drop_a_pin...");
   console.log(place);
   var coords = new google.maps.LatLng(parseFloat(place.coord_x), parseFloat(place.coord_y));
-  createMarker(coords, place.name, false, place.id);
+  createMarker(coords, place.name, false, place.id, icon);
 };
 
 // create a map marker with the coordinates and test passed
-function createMarker(coords, title, draggable, place_id) {
+function createMarker(coords, title, draggable, place_id, icon) {
   // if place_id = 0 means that comes from a click on the map, ie, new emergency
   // if place_id > 0 means that is a new automatic emergency
   var marker = new google.maps.Marker( {
     position: coords,
     draggable: draggable,
     map: map,
-    // icon: 'map-pin-green.png',
+    icon: icon,
     title: title + " (" + place_id.toString() + ")"
   });
   add_click_event_listener_to_marker(marker, place_id);
@@ -231,3 +232,8 @@ function add_click_event_listener_to_marker(marker, place_id) {
 
 };
 
+function delete_pin(place_name) {
+  console.log("Deleting pin..." + place_name);
+  console.log(place_name);
+  // localize marker with title=place.name and assign setMap(nul)
+};

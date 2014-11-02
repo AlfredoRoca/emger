@@ -1,8 +1,6 @@
 <% if current_user %>
   <h1>Emergencies</h1>
 
-  <p id="menu">MENU</p>
-
   <%= render 'map' %>
 
   <%= link_to "New", new_emergency_path %>
@@ -19,6 +17,7 @@
           <th></th>
           <th></th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -32,6 +31,7 @@
               <td><%= emer.followups.count if emer.followups %></td>
               <td><%= link_to "Edit", edit_emergency_path(emer) %></td>
               <td><%= link_to "Show", emergency_path(emer) %></td>
+              <td><%= link_to "Close", close_emergency_path(emer) %></td>
               <td><%= link_to "Delete", emergency_path(emer), method: :delete,
                       data: {confirm: "Are you sure?"}  %></td>
             </tr>

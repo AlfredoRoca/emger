@@ -40,13 +40,32 @@ class EmergenciesController < ApplicationController
   def close
     if @emergency.update(status: Emergency::EMERGENCY_STATUS_CLOSED)
       flash[:notice] = "Emergency successfully closed..."
-      redirect_to write_clear_in_plc_url
+      respond_to do |format|
+        html: redirect_to write_clear_in_plc_url
+        json: render
     else
       flash[:error] = "Impossible to close the emergency. Review the errors..."
       render :show
     end
   end
 
+  def close_by_place
+    @emergency = Emergency.find_by(place_id: params[:id])
+    if @emergency.update(status: Emergency::EMERGENCY_STATUS_CLOSED)
+      flash[:notice] = "Emergency successfully closed..."
+      @place = @emergency.place
+      respond_to do |format|
+        html: redirect_to write_clear_in_plc_url
+        response = {"place" => @place, "emergency" => @emergency}
+        json: { render json: response }
+      end
+    else
+      flash[:error] = "Impossible to close the emergency. Review the errors..."
+      respond_to do |format|
+        html: render :show
+        json: { render json: "Impossible to close the emergency." }
+    end
+  end
   def create
     @emergency = Emergency.create(emergency_params.merge(status: Emergency::EMERGENCY_STATUS_OPEN))
     if @emergency.save
@@ -87,6 +106,27 @@ class EmergenciesController < ApplicationController
       status   =  450
     end
       render json: response
+  end
+
+  def modbus_new_emergency
+    # check if already exists an open emergency
+    # if not, create a new one
+    place = Place.find(params[:id])
+    emergency = Emergency.open.find_by(place_id: params[:id])
+    unless emergency
+      emergency = Emergency.create()
+        emergency.status      = Emergency::EMERGENCY_STATUS_OPEN
+        emergency.place_id    = params[:id]
+        emergency.date        = DateTime::now
+        emergency.simulacrum  = false
+      if emergency.save
+        response = {"place" => place, "emergency" => emergency}
+      else
+        response = "Error saving new emergency. Params: #{params}"
+        status   = 451
+      end
+    end
+    render json: response
   end
 
   private
