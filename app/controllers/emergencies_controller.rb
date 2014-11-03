@@ -82,7 +82,7 @@ class EmergenciesController < ApplicationController
     redirect_to emergencies_url
   end
 
-  def here_new_emergency
+  def here_new
     place = Place.create()
       place.name = params[:name]
       place.description = params[:description]

@@ -21,7 +21,7 @@ before_action :get_params
     # this function return an array of hashes
 
     # simulation without plc for 3 places
-    @registers = %w{ 1 45 1 4 0 67 0 2 0 234 0 10 0 999 1 5 }
+    @registers = %w{ 1 45 1 5 1 67 0 6 1 234 0 7 1 999 1 9 }
     
     result = []
     until @registers.empty? do
@@ -32,11 +32,11 @@ before_action :get_params
   end
 
   def read_holding_registers 
-    ModBus::TCPClient.new(MODBUS_SERVER_IP_ADDR, MODBUS_SERVER_PORT) do |cl|
+    ModBus::TCPClient.new(modbus_config[:ip_addr], modbus_config[:port]) do |cl|
       cl.with_slave(1) do |slave|
         @registers = slave.read_holding_registers @first, @quantity
         flash[:notice] = "Successfully read registers..."
-        @first += (MODBUS_SERVER_ONE_BASED_ADDRESSING ? 1 : 0)
+        @first += (modbus_config[:one_based_addressing] ? 1 : 0)
         detect_and_create_new_emergencies
         # render :show_modbus_read_values
       end
@@ -54,8 +54,8 @@ before_action :get_params
       value     = set[1]
       condition = set[2]
       place_id  = set[3]
-      # emergency if MODBUS_SERVER_VALUE_FOR_EMERGENCY
-      if status == MODBUS_SERVER_VALUE_FOR_EMERGENCY
+      # emergency if modbus_config[:value_for_emergency
+      if status == modbus_config[:value_for_emergency]
         # check if there is any emergency open in the same place
         unless Emergency.open.find(place_id)
           # create a new emergency
@@ -73,11 +73,11 @@ before_action :get_params
   end
 
   def read_coils
-    ModBus::TCPClient.new(MODBUS_SERVER_IP_ADDR, MODBUS_SERVER_PORT) do |cl|
+    ModBus::TCPClient.new(modbus_config[:ip_addr], modbus_config[:port]) do |cl|
       cl.with_slave(1) do |slave|
         @coils = slave.read_coils @first, @quantity
         flash[:notice] = "Successfully read coils..."
-        @first += (MODBUS_SERVER_ONE_BASED_ADDRESSING ? 1 : 0)
+        @first += (modbus_config[:one_based_addressing] ? 1 : 0)
         render :show_modbus_read_values
       end
     end 
@@ -88,7 +88,7 @@ before_action :get_params
 
   def write_single_coil
     @first = 2 # TO-DO: relate id emergency with plc memory address
-    ModBus::TCPClient.new(MODBUS_SERVER_IP_ADDR, MODBUS_SERVER_PORT) do |cl|
+    ModBus::TCPClient.new(modbus_config[:ip_addr], modbus_config[:port]) do |cl|
       cl.with_slave(1) do |slave|
         slave.write_single_coil @first, 1
         flash[:notice] = "Successfully closed emergency..."
@@ -101,7 +101,7 @@ before_action :get_params
   end
 
   def write_single_register
-    ModBus::TCPClient.new(MODBUS_SERVER_IP_ADDR, MODBUS_SERVER_PORT) do |cl|
+    ModBus::TCPClient.new(modbus_config[:ip_addr], modbus_config[:port]) do |cl|
       cl.with_slave(1) do |slave|
         slave.write_single_register @plc_id_register, @id_emergency.to_i
         flash[:notice] = "Successfully written emergency id..."
@@ -114,10 +114,14 @@ before_action :get_params
   end
 
   def get_params
-    @first = (params[:first] || 3) - (MODBUS_SERVER_ONE_BASED_ADDRESSING ? 1 : 0)
+    @first = (params[:first] || 3) - (modbus_config[:one_based_addressing] ? 1 : 0)
     @quantity  = params[:quantity] || 6
     @id_emergency = params[:id]
     # TO-DO pending defining plc model with plc addresses
-    @plc_id_register = (params[:plc_id] || 4) - (MODBUS_SERVER_ONE_BASED_ADDRESSING ? 1 : 0)
+    @plc_id_register = (params[:plc_id] || 4) - (modbus_config[:one_based_addressing] ? 1 : 0)
+  end
+
+  def modbus_config
+    Rails.application.config.modbus_server
   end
 end

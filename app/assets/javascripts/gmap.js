@@ -1,13 +1,13 @@
-var default_map_center_latitude = 41.105844;
-var default_map_center_longitude = 1.178449;
-var default_general_zoom = 15
-var default_place_zoom = 20
-var map;
-var ROOT_URL = 'http://localhost:3000';
-var ROOT_API_V1_URL = 'http://localhost:3000/api/v1';
-var current_zoom;
-var keyZ = 90;
-var keyQ = 81;
+var default_map_center_latitude = 41.105844,
+    default_map_center_longitude = 1.178449,
+    default_general_zoom = 15,
+    default_place_zoom = 20,
+    map,
+    current_zoom,
+    keyZ = 90,
+    keyQ = 81;
+    
+var ROOT_URL = "http://localhost:3000";
 
 $(window).load(function() {
   loadScript();
@@ -99,11 +99,9 @@ function processKeyPressed(event) {
 // creates markers for each place
 // adds events
 function drop_pins(array_of_places, icon) {
-  // if (array_of_places && array_of_places.isArray()) {
     array_of_places.forEach(function(place, index, array) {
       drop_a_pin(place, icon);
     });
-  // }
 };
 
 function drop_a_pin(place, icon) {
@@ -113,7 +111,6 @@ function drop_a_pin(place, icon) {
   createMarker(coords, place.name, false, place.id, icon);
 };
 
-// create a map marker with the coordinates and test passed
 function createMarker(coords, title, draggable, place_id, icon) {
   // if place_id = 0 means that comes from a click on the map, ie, new emergency
   // if place_id > 0 means that is a new automatic emergency
@@ -149,7 +146,7 @@ var contentInfoString = function(name, place_id) {
 
 function createNewEmergencyHere() {
   console.log("createNewEmergencyHere...");
-  console.log("url: /here_new_emergency");
+  console.log("url: /here_new");
   var place_name        = document.getElementById("place_name");
   var description       = document.getElementById("description");
   var data_coordinates  = $("#dataset")[0];
@@ -158,7 +155,7 @@ function createNewEmergencyHere() {
   console.log(data_coordinates);
   $.ajax({
     type: "POST",
-    url: 'emergencies/here_new_emergency',
+    url: 'emergencies/here_new',
     data: { name:         place_name.value,
             description:  description.value,
             coord_x:      data_coordinates.dataset.lat,
@@ -180,25 +177,17 @@ function createNewEmergencyHere() {
       // response = "Error saving new place. Params: #{params}"
       // status   =  450
       document.getElementById("xhrStatus").innerHTML = jqXHR.responseText;
-
-    }).always(function() { 
-      // alert("complete"); 
-
     });
 }
 
 function add_click_event_listener_to_marker(marker, place_id) {
+  console.log("Entering add click event...");
+  console.log(place_id);
   // if place_id = 0 means that comes from a click on the map, ie, new emergency
   // if place_id > 0 means that is a new automatic emergency
   google.maps.event.addListener(marker, 'click', function(event) {
     console.log("add_click_event_listener_to_marker...");
     console.log(event);
-    // event.latLng
-    // event.nb: MouseEvent
-    // event.pixel
-    // console.log("shift? " + (event.nb.shiftKey ? "true" : "false"));
-      if (true) {
-      // if (!event.nb.shiftKey && !event.nb.ctrlKey) {
         // when click on a marker, applies zoom and centers on it
         map.setZoom(default_place_zoom);
         map.setCenter(marker.getPosition());
@@ -209,24 +198,18 @@ function add_click_event_listener_to_marker(marker, place_id) {
         this.getMap()._infoWindow.close();
         var latlng = marker.getPosition();
         if (place_id == 0) { // new emergency --> open a form to enter new info
+          console.log("filling infowindow with form");
           this.getMap()._infoWindow.setContent(contentFormString(latlng.lat(), latlng.lng()));
         }
         else { // automatic emergency --> show place info
-          // params: name, description, place_id
           // TODO request place info to fill the infoWindow
-          this.getMap()._infoWindow.setContent(contentInfoString(marker.title, place_id));
+          console.log("filling infowindow with " + marker.getTitle() + " id " + place_id.toString());
+          this.getMap()._infoWindow.setContent(contentInfoString(marker.getTitle(), place_id));
         }
         this.getMap()._infoWindow.open(this.getMap(), this);
 
         console.log("click with no buttons:");
         // console.log(event);
-      }
-      else {
-        // console.log("click with button:");
-        // console.log(event);
-        // removes the marker
-        marker.setMap(null);
-      };
   });
 
 };

@@ -24,8 +24,8 @@ some_geopoints = [
 10.times do |i|
   place = Place.create({
     name:         Faker::Address.city,
-    description:  Faker::Address.street_address
-    coord_x:      some_geopoints[i][0]
+    description:  Faker::Address.street_address,
+    coord_x:      some_geopoints[i][0],
     coord_y:      some_geopoints[i][1]
     })
   ((i+4)/2).times do |j|

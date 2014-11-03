@@ -1,5 +1,5 @@
-var MODBUS_SERVER_VALUE_FOR_EMERGENCY = 1
-var MODBUS_SERVER_VALUE_FOR_CLEAR = 2
+var MODBUS_SERVER_VALUE_FOR_EMERGENCY = 1,
+    MODBUS_SERVER_VALUE_FOR_CLEAR     = 2;
 
 function worker() {
   console.log("Entering worker...");
@@ -45,7 +45,7 @@ function request_place_info(place_id) {
   console.log("request_place_info(place_id): place_id = " + place_id);
   $.ajax({
     type: "GET",
-    url: 'place/' + place_id,
+    url: 'places/' + place_id,
     dataType: "json"
 
     }).done(function(place,textStatus, jqXHR) {

@@ -7,10 +7,12 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <div class="container">
-    <nav>
+  <!-- <nav class="navbar navbar-default navbar-fixed-top" role="navigation"> -->
+  <nav >
+    <div class="container">
       <ul>
         <% if current_user %>
+          <li><%= link_to "Map", root_path %></li>
           <li><%= link_to "Emergencies", emergencies_path %></li>
           <li><%= link_to "Scenarios", scenarios_path %></li>
           <li><%= link_to "Companies", companies_path %></li>
@@ -20,14 +22,14 @@
           <div><%= current_user.name %> <%= current_user.lastname %></div>
         <% end %>
         </ul>
-    </nav>
+    </div>
+  </nav>
 
     <% flash.map do |key, msg| %>
       <%= content_tag :div, msg, id: key %>
     <% end %>
 
     <%= yield %>
-  </div>
 
 </body>
 </html>

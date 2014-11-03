@@ -34,5 +34,14 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  
+
+  # configuration variables
+  config.modbus_server = {
+    ip_addr:              '192.168.1.147',
+    port:                 502,
+    one_based_addressing: true, # modbus address starts in 1
+    value_for_emergency:  1,
+    value_for_clear:      2
+  }
+
 end

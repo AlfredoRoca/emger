@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
 
-  root 'emergencies#index'
+  root 'welcome#index'
 
   resources :emergencies do
     collection do
       get  'places'     # => 'emergencies#places'
-      post 'here_new'   # => 'emergencies#here_new_emergency'
+      post 'here_new'   # => 'emergencies#here_new'
     end
     member do
       post 'modbus_new_emergency'   # => 'emergencies#modbus_new_emergency'

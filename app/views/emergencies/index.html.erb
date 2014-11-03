@@ -1,8 +1,6 @@
 <% if current_user %>
   <h1>Emergencies</h1>
 
-  <%= render 'map' %>
-
   <%= link_to "New", new_emergency_path %>
   <% if @emergencies.any? %>
     <table>
