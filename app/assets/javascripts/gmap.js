@@ -1,5 +1,3 @@
-require worker.js
-
 var default_map_center_latitude = 41.105844;
 var default_map_center_longitude = 1.178449;
 var default_general_zoom = 15

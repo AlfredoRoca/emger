@@ -18,6 +18,7 @@ Name: <%= @place.name %>
       <% @place.emergencies.each do |emer| %>
         <li><%= localize_date emer.date %>: Status: <%= emer.status %>
             <%= link_to "Edit", edit_emergency_path(emer) %>
+            <%= link_to "Show", emergency_path(emer) %>
         </li>
       <% end %>
     </ol>
