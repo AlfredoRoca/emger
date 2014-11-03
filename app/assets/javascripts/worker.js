@@ -93,7 +93,7 @@ function request_close_emergency(place_id) {
   console.log("request_close_emergency: place_id = " + place_id);
   $.ajax({
     type: "GET",
-    url: 'emergency/' + place_id + "/close_by_place"
+    url: 'emergency/' + place_id + "/close_by_place",
     dataType: "json"
 
     }).done(function(data,textStatus, jqXHR) {

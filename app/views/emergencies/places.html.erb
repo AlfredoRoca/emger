@@ -1,0 +1,38 @@
+<% if current_user %>
+<h1>Open emergencies places</h1>
+  <%= link_to "New", new_place_path %>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Coord X</th>
+        <th>Coord Y</th>
+        <th>Emergencies</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @open_emergencies_places.each do |place| %>
+        <tr>
+          <td><%= place.id %></td>
+          <td><%= place.name %></td>
+          <td><%= place.description %></td>
+          <td><%= place.coord_x %></td>
+          <td><%= place.coord_y %></td>
+          <td><%= place.emergencies.count %></td>
+          <td><%= link_to "Edit", edit_place_path(place) %></td>
+          <td><%= link_to "Show", place_path(place) %></td>
+          <td><%= link_to "Delete", place_path(place), method: :delete,
+              data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% else %>
+  <%= render 'login/login_form' %>
+<% end %>

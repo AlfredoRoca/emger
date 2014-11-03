@@ -10,10 +10,10 @@ class EmergenciesController < ApplicationController
   end
 
   def places
-    @emergencies = Emergency.open.map{|e| e.place}
+    @open_emergencies_places = Emergency.open.map{|e| e.place}
     respond_to do |format|
       format.html
-      format.json { render json: @emergencies }
+      format.json { render json: @open_emergencies_places }
     end
   end
 
