@@ -15,7 +15,13 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :scenarios, :companies, :places, :people
+  resources :scenarios, :companies, :people
+
+  resources :places do
+    collection do
+      get 'located'          # => 'places#pinned_places'
+    end
+  end
 
   post   "/login",  to: "login#create"
   delete "/logout", to: "login#destroy"
@@ -27,8 +33,6 @@ Rails.application.routes.draw do
   post 'modbus_write_reg/:id'   => 'modbus#write_single_register', as: :write_id_in_plc
   get 'modbus_info'             => 'modbus#modbus_info'
 
-  get 'pinned_places'           => 'places#load_pinned_places'
-  get 'place/:place_id'         => 'places#send_place'
   
 
   # API routes

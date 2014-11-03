@@ -1,15 +1,11 @@
 class PlacesController < ApplicationController
   before_action :load_place, only: [:edit, :show, :update, :destroy]
 
-  def load_pinned_places
-    @places = Place.pinned
-    render :json => @places
-  end
-
-  def send_place
-    @place = Place.find(params[:place_id])
-    # render text: params.inspect
-    render :json => @place
+  def located
+    @places = Place.pinned.order("name ASC")
+    respond_to do |format|
+      format.json { render json: @places }
+    end
   end
 
   def index
@@ -17,6 +13,10 @@ class PlacesController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.json { render json: @place }
+    end
   end
 
   def edit
