@@ -43,7 +43,7 @@ class FollowupsController < ApplicationController
   private
 
   def followup_params
-    params.require(:followup).permit(:title, :description)
+    params.require(:followup).permit(:title, :description, :emergency_id)
   end
 
   def load_emergency

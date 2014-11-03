@@ -1,6 +1,4 @@
 class LoginController < ApplicationController
-  def new
-  end
 
   def create
     user = Person.where(email: params[:email]).first

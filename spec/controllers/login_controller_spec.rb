@@ -2,23 +2,6 @@ require 'rails_helper'
 
 RSpec.describe LoginController, :type => :controller do
 
-  describe "GET new" do
-    
-    it "returns http success" do
-      get :new
-
-      expect(response).to be_success
-      expect(response).to have_http_status(200)
-    end
-
-    it "renders the login form" do
-      get :new
-
-      expect(response).to render_template(:new)
-    end
-      
-  end
-
   describe "POST #create (login)" do
 
     let(:user) { FactoryGirl.create(:person, name: "pepe", lastname: "lopez", email: "qw@qwe.com", password: "1")}

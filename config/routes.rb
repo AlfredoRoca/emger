@@ -3,7 +3,6 @@ Rails.application.routes.draw do
   root 'emergencies#index'
 
   resources :emergencies do
-    resources :followups
     collection do
       get  'places'     # => 'emergencies#places'
       post 'here_new'   # => 'emergencies#here_new_emergency'
@@ -13,6 +12,7 @@ Rails.application.routes.draw do
       get  'close'                  # => 'emergencies#close', as: :close_emergency
       get  'close_by_place'         # => 'emergencies#close_by_place'
     end
+    resources :followups
   end
 
   resources :scenarios, :companies, :people
