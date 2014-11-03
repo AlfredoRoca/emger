@@ -50,7 +50,7 @@ function initialize() {
     dataType: "json"
 
     }).done(function(data, textStatus, jqXHR) {
-      console.log("GET open emergencies...");
+      console.log("GET places of open emergencies...");
       console.log(data);
       drop_pins(data, customIcons.blue.icon);
 
@@ -139,10 +139,9 @@ var contentFormString = function(lat, lng) {
   return html;
 };
 
-var contentInfoString = function(name, description, place_id) {
+var contentInfoString = function(name, place_id) {
   var html = "<table>" +
              "<tr><td>Place name: " + name + "</td> </tr>" +
-             "<tr><td>Description: " + description + "</td> </tr>" +
              "<tr><td><a href='" + ROOT_URL + "/places/" + place_id + "'>More info</a></td> </tr>" +
              "</table>";
   return html;
@@ -159,7 +158,7 @@ function createNewEmergencyHere() {
   console.log(data_coordinates);
   $.ajax({
     type: "POST",
-    url: 'emergencies/here_new',
+    url: 'emergencies/here_new_emergency',
     data: { name:         place_name.value,
             description:  description.value,
             coord_x:      data_coordinates.dataset.lat,
@@ -215,7 +214,7 @@ function add_click_event_listener_to_marker(marker, place_id) {
         else { // automatic emergency --> show place info
           // params: name, description, place_id
           // TODO request place info to fill the infoWindow
-          this.getMap()._infoWindow.setContent(contentInfoString(latlng.lat(), latlng.lng()));
+          this.getMap()._infoWindow.setContent(contentInfoString(marker.title, place_id));
         }
         this.getMap()._infoWindow.open(this.getMap(), this);
 
