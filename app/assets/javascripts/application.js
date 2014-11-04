@@ -15,4 +15,3 @@
 //= require turbolinks
 //= require worker
 //= require_tree .
-

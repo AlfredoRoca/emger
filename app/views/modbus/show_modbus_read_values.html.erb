@@ -1,23 +1,25 @@
-<h1>Show holding registers</h1>
+<% if current_user %>
+  <h1>Show holding registers</h1>
 
-<% if @registers %>
-  <% addr = @first %>
-  <ul>
-    <% @registers.each do |reg| %>
-      <li><%= addr %> => <%= reg %></li>
-          <% addr += 1 %>
-    <% end %>
-  </ul>
-<% end %>
+  <% if @registers %>
+    <% addr = @first %>
+    <ul>
+      <% @registers.each do |reg| %>
+        <li><%= addr %> => <%= reg %></li>
+            <% addr += 1 %>
+      <% end %>
+    </ul>
+  <% end %>
 
 
-<% if @coils %>
-<h1>Show coils</h1>
-  <% addr = @first %>
-  <ul>
-    <% @coils.each do |coil| %>
-      <li><%= addr %> => <%= coil %></li>
-          <% addr += 1 %>
-    <% end %>
-  </ul>
+  <% if @coils %>
+  <h1>Show coils</h1>
+    <% addr = @first %>
+    <ul>
+      <% @coils.each do |coil| %>
+        <li><%= addr %> => <%= coil %></li>
+            <% addr += 1 %>
+      <% end %>
+    </ul>
+  <% end %>
 <% end %>

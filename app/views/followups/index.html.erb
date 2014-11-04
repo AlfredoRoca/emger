@@ -1,7 +1,6 @@
 <h1>Emergency follow-up</h1>
-
 <% if current_user %>
-  <%= link_to "New", new_followup_path %>
+  <%= button_to "New", new_followup_path, method: :get, class: "btn btn-success btn-xs" %>
 
   <% if @followups && @followups.any? %>
     <% @followups.each do |f| %>
@@ -10,5 +9,4 @@
   <% else %>
   <p>No follow-ups</p>
   <% end %>
-
 <% end %>

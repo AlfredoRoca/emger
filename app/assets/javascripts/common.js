@@ -20,4 +20,3 @@ var customIcons = {
     }
   }
 };
-

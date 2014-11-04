@@ -1,0 +1,9 @@
+// responsive table fix for Bootstrap in Firefox
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
+
+h1 {
+  margin-top: 0px;
+}
+

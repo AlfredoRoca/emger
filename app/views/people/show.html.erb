@@ -1,7 +1,9 @@
-<h1>Show person information</h1>
+<% if current_user %>
+  <h1>Show person information</h1>
 
-<%= @person.name %> <%= @person.lastname %>
-<ul>
-  <li>Phone: <%= @person.phone %></li>
-  <li>Email: <%= @person.email %></li>
-</ul> 
+  <%= @person.name %> <%= @person.lastname %>
+  <ul>
+    <li>Phone: <%= @person.phone %></li>
+    <li>Email: <%= @person.email %></li>
+  </ul> 
+<% end %>

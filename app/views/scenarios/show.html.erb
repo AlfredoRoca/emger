@@ -1,5 +1,7 @@
-<h1>Scenario information</h1>
-<ul>
-  <li><%= @scenario.name %></li>
-  <li><%= @scenario.description %></li>
-</ul>
+<% if current_user %>
+  <h1>Scenario information</h1>
+  <ul>
+    <li><%= @scenario.name %></li>
+    <li><%= @scenario.description %></li>
+  </ul>
+<% end %>
