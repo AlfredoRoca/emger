@@ -6,22 +6,35 @@
   </ul>
 <% end %>
 
-<%= form_for @emergency do |emer| %>
+<%= form_for @emergency, html: {class: "form-horizontal"} do |emer|  %>
+
   <div class="form-group">
-    <%= emer.label :date, "emergency date" %>
-    <%= emer.datetime_select :date, class: "form-control" %>
+    <%= emer.label :date, "Emergency date", class: "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= emer.datetime_select :date, class: "form-control" %>
+    </div>
   </div>
-  <div class="checkbox">
-    <%= emer.label :simulacrum do %>
-      <%= emer.check_box :simulacrum %> Simulacrum
-    <% end %>
+  <div class="form-group">
+    <%= emer.label :place_id, class: "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= emer.select :place_id, 
+          Place.all.collect {|place| [place.name, place.id]},
+          {include_blank: true} %>
+    </div>
   </div>
-  <div>
-    <%= emer.label :place_id %>
-    <%= emer.select :place_id, 
-        Place.all.collect {|place| [place.name, place.id]},
-        {include_blank: true} %>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-6">
+      <div class="checkbox col-sm-2">
+        <%= emer.label :simulacrum  do %>
+          <%= emer.check_box :simulacrum %> Simulacrum
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-6">
+        <%= emer.submit "Submit", class: "btn btn-success" %>
+    </div>
   </div>
 
-  <%= emer.submit "Update", class: "btn btn-default" %>
 <% end %>

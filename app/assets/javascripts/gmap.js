@@ -10,7 +10,9 @@ var default_map_center_latitude = 41.105844,
 var ROOT_URL = "http://localhost:3000";
 
 $(window).load(function() {
-  loadScript();
+  if (window.location.pathname == '/') {
+    loadScript();
+  }
 });
 
 function loadScript() {
@@ -128,11 +130,12 @@ function createMarker(coords, title, draggable, place_id, icon) {
 // source: https://developers.google.com/maps/articles/phpsqlinfo_v3
 var contentFormString = function(lat, lng) {
   var html = "<table>" +
-             "<tr><td>Request status:</td> <td id='xhrStatus'></td></tr>" +
              "<tr><td>Place name:</td> <td><input id='place_name' type='text'/> </td> </tr>" +
              "<tr><td>Description:</td> <td><input id='description' type='text'/></td> </tr>" +
              "<tr><td id='dataset' data-lat=" + lat.toString() + " data-lng=" + lng.toString() + "></td> </tr>" +
-             "<tr><td></td><td><input type='button' value='Create new emergency here now' onclick='createNewEmergencyHere()'/></td></tr></table>";
+             "<tr><td></td><td><input type='button' value='Create new emergency here now' onclick='createNewEmergencyHere()'/></td></tr>" +
+             "<tr><td>Response:</td> <td id='xhrStatus'></td></tr>" +
+             "</table>";
   return html;
 };
 

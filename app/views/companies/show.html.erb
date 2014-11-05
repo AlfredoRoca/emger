@@ -9,12 +9,13 @@
     </ul>
   <% end %>
 
-  Name: <%= @company.name %>
+  <h3><%= @company.name %></h3>
   <ul>
     <li>Activity: <%= @company.activity %></li>
     <li>Phone 1: <%= @company.phone1 %></li>
     <li>email: <%= @company.email %></li>
-    <li>People: 
+  </ul>
+    <h4>People in this company</h4>
       <% if @company.people.any? %>
       <div class="table-responsive">
           <table class="table table-striped table-hover table-condensed">
@@ -48,7 +49,5 @@
       <% else %>
         <p>NONE</p>
       <% end %>
-    </li>
-  </ul>
 <% end %>
 

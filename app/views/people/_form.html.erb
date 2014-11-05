@@ -6,34 +6,53 @@
 </ul>
 <% end %>
 
-<%= form_for @person do |p| %>
+<%= form_for @person, html: {class: "form-horizontal"} do |p| %>
   <div class="form-group">
-    <%= p.label :name %>
-    <%= p.text_field :name, placeholder: 'first name' %>
+    <%= p.label :name, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= p.text_field :name, class: "form-control" %>
+    </div>
   </div>
   <div class="form-group">
-    <%= p.label :lastname %>
-    <%= p.text_field :lastname, placeholder: 'surname' %>
+    <%= p.label :lastname, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= p.text_field :lastname, class: "form-control" %>
+    </div>
   </div>
   <div class="form-group">
-    <%= p.label :phone %>
-    <%= p.telephone_field :phone %>
+    <%= p.label :phone, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= p.telephone_field :phone, class: "form-control" %>
+    </div>
   </div>
   <div class="form-group">
-    <%= p.label :email %>
-    <%= p.email_field :email %>
+    <%= p.label :email, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= p.email_field :email, class: "form-control" %>
+    </div>
   </div>
   <div class="form-group">
-    <%= p.label :password %>
-    <%= p.password_field :password %>
+    <%= p.label :password, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= p.password_field :password, class: "form-control" %>
+    </div>
   </div>
   <div class="form-group">
-    <%= p.label :password_confirmation %>
-    <%= p.password_field :password_confirmation %>
+    <%= p.label :password_confirmation, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= p.password_field :password_confirmation, class: "form-control" %>
+    </div>
   </div>
   <div class="form-group">
-    <%= p.label :company_id %>
-    <%= p.select :company_id, Company.all.collect {|co| [co.name, co.id]} %>
+    <%= p.label :company_id, class: "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= p.select :company_id, Company.all.collect {|co| [co.name, co.id]},
+          {include_blank: true}  %>
+    </div>
   </div>
-    <%= p.submit "Update" %>
+  <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-4">
+        <%= p.submit "Submit", class: "btn btn-success" %>
+    </div>
+  </div>
 <% end %>

@@ -6,18 +6,29 @@
   </ul>
 <% end %>
 
-Date: <%= localize_date @emergency.date %>
-Place: <%= @emergency.place.name %> - <%= @emergency.place.description %>
+<dl class="dl-horizontal">
+  <dt>Date of emergency:</dt> <dd><%= localize_date @emergency.date %></dd>
+  <dt>Place:</dt> <dd><%= @emergency.place.name %> - <%= @emergency.place.description %></dd>
+  <dt>Now:</dt> <dd><%= localize_date DateTime::now %></dd>
+</dl>
 
-<%= form_for [@emergency, @followup] do |fo| %>
-  <div>
-    <%= fo.label :title %>
-    <%= fo.text_field :title, placeholder: 'short title' %>
+<%= form_for [@emergency, @followup], html: {class: "form-horizontal"} do |fo| %>
+  <div class="form-group">
+    <%= fo.label :title, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= fo.text_field :title, class: "form-control" %>
+    </div>
   </div>
-  <div>
-    <%= fo.label :description %>
-    <%= fo.text_field :description, placeholder: 'description' %>
+  <div class="form-group">
+    <%= fo.label :description, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= fo.text_field :description, class: "form-control" %>
+    </div>
   </div>
 
-  <%= fo.submit "Update", class: "btn btn-default" %>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-4">
+      <%= fo.submit "Submit", class: "btn btn-success" %>
+    </div>
+  </div>
 <% end %>

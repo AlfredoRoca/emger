@@ -6,22 +6,34 @@
   </ul>
 <% end %>
 
-<%= form_for @company do |co| %>
+<%= form_for @company, html: {class: "form-horizontal"} do |co| %>
   <div class="form-group">
-    <%= co.label :name %>
-    <%= co.text_field :name, placeholder: 'company name' %>
+    <%= co.label :name, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= co.text_field :name, class: "form-control" %>
+    </div>
   </div>
   <div class="form-group">
-    <%= co.label :activity %>
-    <%= co.select :activity, [Company::COMPANY_TYPE_FACTORY, Company::COMPANY_TYPE_PUBLIC] %>
+    <%= co.label :activity, class: "col-sm-2 control-label"%>
+    <div class="col-sm-4">
+      <%= co.select :activity, ["", Company::COMPANY_TYPE_FACTORY, Company::COMPANY_TYPE_PUBLIC] %>
+    </div>
   </div>
   <div class="form-group">
-    <%= co.label :phone1 %>
-    <%= co.telephone_field :phone1, placeholder: 'Contact telephone' %>
+    <%= co.label :phone1, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= co.telephone_field :phone1, class: "form-control" %>
+    </div>
   </div>
   <div class="form-group">
-    <%= co.label :email %>
-    <%= co.email_field :email, placeholder: 'Contact email' %>
+    <%= co.label :email, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= co.email_field :email, class: "form-control" %>
+    </div>
   </div>
-    <%= co.submit "Update", class: "btn btn-default" %>
+  <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-4">
+        <%= co.submit "Submit", class: "btn btn-success" %>
+    </div>
+  </div>
 <% end %>

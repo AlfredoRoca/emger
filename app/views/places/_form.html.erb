@@ -6,22 +6,34 @@
   </ul>
 <% end %>
 
-<%= form_for @place do |place| %>
+<%= form_for @place, html: {class: "form-horizontal"} do |place| %>
   <div class="form-group">
-  <%= place.label :name %>
-  <%= place.text_field :name %>
+    <%= place.label :name, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= place.text_field :name, class: "form-control" %>
+    </div>
   </div>
   <div class="form-group">
-  <%= place.label :description %>
-  <%= place.text_field :description %>
+    <%= place.label :description, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= place.text_field :description, class: "form-control" %>
+    </div>
   </div>
   <div class="form-group">
-  <%= place.label :coord_x %>
-  <%= place.text_field :coord_x %>
+    <%= place.label :coord_x, "Altitude", class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= place.text_field :coord_x, class: "form-control" %>
+    </div>
   </div>
   <div class="form-group">
-  <%= place.label :coord_y %>
-  <%= place.text_field :coord_y %>
+    <%= place.label :coord_y, "Longitude", class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= place.text_field :coord_y, class: "form-control" %>
+    </div>
   </div>
-  <%= place.submit 'Update', class: "btn btn-default" %>
+  <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-4">
+        <%= place.submit 'Update', class: "btn btn-success" %>
+    </div>
+  </div>
 <% end %>

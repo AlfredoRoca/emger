@@ -12,38 +12,32 @@
   <ul>
     <li>Date: <%= localize_date @emergency.date %></li>
     <li>Status: <%= @emergency.status %></li>
-    <li>Place: <%= @emergency.place.name %> - <%= @emergency.place.description %></li>
+    <li><h4>Place: <%= @emergency.place.name %> - <%= @emergency.place.description %></h4>
+      <%= button_to "Show", place_path(@emergency.place),
+          method: :get, class: "btn btn-info btn-xs" %></li>
     <% if @emergency.simulacrum %>
       <li>"Simulacrum" </li>
     <% end %>
   </ul>
 
-  <h2>Follow-up</h2>
-  <%= link_to "New", new_emergency_followup_path(@emergency) %>
+  <h3>Follow-up</h3>
+  <%= button_to "New", new_emergency_followup_path(@emergency), 
+      method: :get, class: "btn btn-success btn-xs"  %>
   <% if @emergency.followups.any? %>
     <% @emergency.followups.each do |f| %>
-      <ul>
-          <li>
-            Created: <%= localize_date f.created_at %> 
-          </li>
-          <li>
-            Updated: <%= localize_date f.updated_at %>
-          </li>
-          <li>
-            Title: <%= f.title %>
-          </li>
-          <li>
-            Description: <%= f.description %>
-          </li>
-          <li>
-            <%= link_to "Edit follow-up", edit_emergency_followup_path(@emergency, f) %>
-          </li>
-      </ul>
+      <dl class="dl-horizontal">
+            <dt>Created:</dt> <dd><%= localize_date f.created_at %> </dd>
+            <dt>Title:</dt> <dd><%= f.title %></dd>
+            <dt>Description:</dt> <dd><%= f.description %></dd>
+            <dt></dt><dd><%= button_to "Edit follow-up", edit_emergency_followup_path(@emergency, f),
+                            method: :get, class: "btn btn-info btn-xs" %></dd>
+      </dl>
     <% end %>
   <% else %>
     <p>No follow-up</p>
   <% end %>
 
-  <%= link_to "Close", close_emergency_path(@emergency) %>
+  <%= button_to "Close emergency", close_emergency_path(@emergency), 
+      method: :get, class: "btn btn-danger btn-xs" %>
 
 <% end %>

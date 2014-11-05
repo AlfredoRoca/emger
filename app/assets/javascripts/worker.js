@@ -3,6 +3,10 @@ var MODBUS_SERVER_VALUE_FOR_EMERGENCY = 1,
 
 function worker() {
   console.log("Entering worker...");
+  if (window.location.pathname != '/') {
+    console.log("Exiting worker...");
+    return;
+  }
 
   $.ajax({
     type: "GET",
