@@ -55,3 +55,6 @@ gem 'whenever'
 
 # modbus https://github.com/flipback/rmodbus
 gem 'rmodbus'
+
+# heroku, logs SQL
+gem 'rails_12factor', group: :production
