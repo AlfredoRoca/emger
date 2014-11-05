@@ -5,7 +5,7 @@ class LoginController < ApplicationController
     if user && user.authenticate(params[:password])
       flash[:success] = "Login sucessful! Welcome #{user.name}!"
       session[:current_user_id] = user.id
-      redirect_to emergencies_path
+      redirect_to root_url
     else
       flash[:error] = "Login was not sucessful"
       render :new

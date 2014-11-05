@@ -37,6 +37,12 @@ class PeopleController < ApplicationController
     end
   end
 
+  def destroy
+    @person.destroy
+    flash[:notice] = "Successfully deleted..."
+    redirect_to people_url
+  end
+
   private
   def load_person
     @person = Person.find(params[:id])
