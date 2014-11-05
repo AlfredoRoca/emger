@@ -32,7 +32,7 @@ function initialize() {
           scaleControl: true,
           streetViewControl: true,
           overviewMapControl: true,
-          scrollwheel: false
+          scrollwheel: true
         };
 
   // initializing map with the above options and draws it in the page
@@ -55,9 +55,6 @@ function initialize() {
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log( textStatus );
 
-    }).always(function() { 
-      // alert("complete"); 
-
     });
 
   worker(); // in worker.js, to retrieve modbus data periodically
@@ -69,7 +66,6 @@ function initialize() {
 
   // map zoom in/out
   document.onkeydown = processKeyPressed;
-  // document.onkeyup = processKeyPressed;
 
 };
 
