@@ -8,6 +8,30 @@
 
 require 'faker'
 
+Person.create({
+  name:         "Alfredo",
+  lastname:     "Roca",
+  phone:        Faker::PhoneNumber.phone_number,
+  email:        "a@a.com",
+  company_id:   0
+  })
+
+Person.create({
+  name:         "Ben",
+  lastname:     "Ito",
+  phone:        Faker::PhoneNumber.phone_number,
+  email:        "b@b.com",
+  company_id:   0
+  })
+
+Person.create({
+  name:         "Car",
+  lastname:     "Litos",
+  phone:        Faker::PhoneNumber.phone_number,
+  email:        "c@c.com",
+  company_id:   0
+  })
+
 some_geopoints = [
   [41.105844, 1.178449],
   [41.105242, 1.173567],
