@@ -13,7 +13,9 @@ Person.create({
   lastname:     "Roca",
   phone:        Faker::PhoneNumber.phone_number,
   email:        "a@a.com",
-  company_id:   0
+  company_id:   0,
+  password:     "1",
+  password_confirmation:  "1"
   })
 
 Person.create({
@@ -21,7 +23,9 @@ Person.create({
   lastname:     "Ito",
   phone:        Faker::PhoneNumber.phone_number,
   email:        "b@b.com",
-  company_id:   0
+  company_id:   0,
+  password:     "1",
+  password_confirmation:  "1"
   })
 
 Person.create({
@@ -29,7 +33,9 @@ Person.create({
   lastname:     "Litos",
   phone:        Faker::PhoneNumber.phone_number,
   email:        "c@c.com",
-  company_id:   0
+  company_id:   0,
+  password:     "1",
+  password_confirmation:  "1"
   })
 
 some_geopoints = [
@@ -75,7 +81,9 @@ end
       lastname:     Faker::Name.last_name,
       phone:        Faker::PhoneNumber.phone_number,
       email:        Faker::Internet.email,
-      company_id:   co.id
+      company_id:   co.id,
+      password:  "1",
+      password_confirmation:  "1"
       })
   end
 end
@@ -93,7 +101,9 @@ end
       lastname:     Faker::Name.last_name,
       phone:        Faker::PhoneNumber.phone_number,
       email:        Faker::Internet.email,
-      company_id:   co.id
+      company_id:   co.id,
+      password:  "1",
+      password_confirmation:  "1"
       })
   end
 end

@@ -7,12 +7,8 @@ var default_map_center_latitude = 41.105844,
     keyZ = 90,
     keyQ = 81;
     
-var ROOT_URL = "http://localhost:3000";
-
 $(window).load(function() {
-  if (window.location.pathname == '/') {
-    loadScript();
-  }
+  loadScript();
 });
 
 function loadScript() {
