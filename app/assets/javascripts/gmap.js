@@ -1,11 +1,11 @@
-var default_map_center_latitude = 41.105844,
-    default_map_center_longitude = 1.178449,
-    default_general_zoom = 15,
-    default_place_zoom = 20,
+var DEFAULT_MAP_CENTER_LATITUDE = 41.105844,
+    DEFAULT_MAP_CENTER_LONGITUDE = 1.178449,
+    DEFAULT_GENERAL_ZOOM = 15,
+    DEFAULT_PLACE_ZOOM = 20,
     map,
     current_zoom,
-    keyZ = 90,
-    keyQ = 81;
+    KEYZ = 90,
+    KEYQ = 81;
     
 $(window).load(function() {
   loadScript();
@@ -25,8 +25,8 @@ function loadScript() {
 function initialize() {
         
   var mapOptions = {
-          center: new google.maps.LatLng(default_map_center_latitude, default_map_center_longitude),
-          zoom: default_general_zoom,
+          center: new google.maps.LatLng(DEFAULT_MAP_CENTER_LATITUDE, DEFAULT_MAP_CENTER_LONGITUDE),
+          zoom: DEFAULT_GENERAL_ZOOM,
           mapTypeId: google.maps.MapTypeId.SATELLITE,
           panControl: true,
           scaleControl: true,
@@ -50,7 +50,7 @@ function initialize() {
     }).done(function(data, textStatus, jqXHR) {
       console.log("GET places of open emergencies...");
       console.log(data);
-      drop_pins(data, customIcons.blue.icon);
+      dropPins(data, customIcons.blue.icon);
 
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log( textStatus );
@@ -74,11 +74,8 @@ var ctrlPressed = false;
 function processKeyPressed(event) {
   ctrlPressed = event.ctrlKey;
   var keyPressed = event.keyCode,
-  zoomInKey   = ctrlPressed && keyPressed == keyZ;
-  zoomOutKey  = ctrlPressed && keyPressed == keyQ;
-  // console.log("key event...");
-  // console.log(event);
-  // console.log(ctrlPressed && keyZPressed);
+  zoomInKey   = ctrlPressed && keyPressed == KEYZ;
+  zoomOutKey  = ctrlPressed && keyPressed == KEYQ;
   if (zoomInKey) {
     current_zoom = map.getZoom();
     map.setOptions({zoom: current_zoom + 1});
@@ -92,13 +89,13 @@ function processKeyPressed(event) {
 // receives the data from server as an array of places
 // creates markers for each place
 // adds events
-function drop_pins(array_of_places, icon) {
+function dropPins(array_of_places, icon) {
     array_of_places.forEach(function(place, index, array) {
-      drop_a_pin(place, icon);
+      dropAPin(place, icon);
     });
 };
 
-function drop_a_pin(place, icon) {
+function dropAPin(place, icon) {
   console.log("Entering drop_a_pin...");
   console.log(place);
   var coords = new google.maps.LatLng(parseFloat(place.coord_x), parseFloat(place.coord_y));
@@ -115,7 +112,7 @@ function createMarker(coords, title, draggable, place_id, icon) {
     icon: icon,
     title: title + " (" + place_id.toString() + ")"
   });
-  add_click_event_listener_to_marker(marker, place_id);
+  addClickEventListenerToMarker(marker, place_id);
 };
 
 // html to ask for info to create a new place with emergency
@@ -162,7 +159,6 @@ function createNewEmergencyHere() {
       console.log("POST herenew data: ");
       console.log(data);
       document.getElementById("xhrStatus").innerHTML = "New place created";
-      // TODO change marker title by new place name
 
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log( "ERROR POST herenew - " + textStatus );
@@ -175,7 +171,7 @@ function createNewEmergencyHere() {
     });
 }
 
-function add_click_event_listener_to_marker(marker, place_id) {
+function addClickEventListenerToMarker(marker, place_id) {
   console.log("Entering add click event...");
   console.log(place_id);
   // if place_id = 0 means that comes from a click on the map, ie, new emergency
@@ -184,7 +180,7 @@ function add_click_event_listener_to_marker(marker, place_id) {
     console.log("add_click_event_listener_to_marker...");
     console.log(event);
         // when click on a marker, applies zoom and centers on it
-        map.setZoom(default_place_zoom);
+        map.setZoom(DEFAULT_PLACE_ZOOM);
         map.setCenter(marker.getPosition());
 
         if (!this.getMap()._infoWindow) {
@@ -197,19 +193,16 @@ function add_click_event_listener_to_marker(marker, place_id) {
           this.getMap()._infoWindow.setContent(contentFormString(latlng.lat(), latlng.lng()));
         }
         else { // automatic emergency --> show place info
-          // TODO request place info to fill the infoWindow
           console.log("filling infowindow with " + marker.getTitle() + " id " + place_id.toString());
           this.getMap()._infoWindow.setContent(contentInfoString(marker.getTitle(), place_id));
         }
         this.getMap()._infoWindow.open(this.getMap(), this);
 
-        console.log("click with no buttons:");
-        // console.log(event);
   });
 
 };
 
-function delete_pin(place_name) {
+function deletePin(place_name) {
   console.log("Deleting pin..." + place_name);
   console.log(place_name);
   // localize marker with title=place.name and assign setMap(nul)

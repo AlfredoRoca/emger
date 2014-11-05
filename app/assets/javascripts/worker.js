@@ -2,12 +2,6 @@ var MODBUS_SERVER_VALUE_FOR_EMERGENCY = 1,
     MODBUS_SERVER_VALUE_FOR_CLEAR     = 2;
 
 function worker() {
-  console.log("Entering worker...");
-  if (window.location.pathname != '/') {
-    console.log("Exiting worker...");
-    return;
-  }
-
   $.ajax({
     type: "GET",
     url: 'modbus_info',
@@ -17,7 +11,7 @@ function worker() {
 
     }).done(function(data,textStatus, jqXHR) {
       console.log("GET modbus_info done");
-      process_modbus_info(data);
+      processModbusInfo(data);
 
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log( "Function worker says: " + textStatus );
@@ -30,22 +24,22 @@ function worker() {
     });
 };
 
-function process_modbus_info(data) {
+function processModbusInfo(data) {
   console.log("Processing modbus info...");
   data.forEach(function(element, index, array) {
     if (element.status == MODBUS_SERVER_VALUE_FOR_EMERGENCY) {
       console.log("Emergency in " + element.name );
-      request_place_info(element.place_id); 
+      requestPlaceInfo(element.place_id); 
       // and create an emergency and put a pin
     }
     if (element.status == MODBUS_SERVER_VALUE_FOR_CLEAR) {
       // close the emergency associated
-      request_close_emergency(element.place_id);
+      requestCloseEmergency(element.place_id);
     }
   });
 }
 
-function request_place_info(place_id) {
+function requestPlaceInfo(place_id) {
   console.log("request_place_info(place_id): place_id = " + place_id);
   $.ajax({
     type: "GET",
@@ -55,21 +49,19 @@ function request_place_info(place_id) {
     }).done(function(place,textStatus, jqXHR) {
       console.log("GET request_place_info: ");
       console.log(place);
-      drop_a_pin(place, customIcons.red.icon);
-      create_a_new_modbus_emergency(place);
+      dropAPin(place, customIcons.red.icon);
+      createANewModbusEmergency(place);
 
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log( "GET request_place_info => " + textStatus );
 
-    }).always(function() { 
-      // alert("complete"); 
     });
 }
 
 // if new emergency via modbus
 // check if there is already an open emergency in that place
 // if not, create a new emergency on it
-function create_a_new_modbus_emergency(place) {
+function createANewModbusEmergency(place) {
   $.ajax({
     type: "POST",
     url: 'emergencies/' + place.id.toString() + '/modbus_new_emergency',
@@ -87,13 +79,10 @@ function create_a_new_modbus_emergency(place) {
       // status   = 451
       console.log(jqXHR.responseText);
 
-    }).always(function() { 
-      // alert("complete"); 
-
     });
 }
 
-function request_close_emergency(place_id) {
+function requestCloseEmergency(place_id) {
   console.log("request_close_emergency: place_id = " + place_id);
   $.ajax({
     type: "GET",
@@ -104,12 +93,10 @@ function request_close_emergency(place_id) {
       // data = {"place" => @place, "emergency" => @emergency}
       console.log("GET request_close_emergency: ");
       console.log(data);
-      delete_pin(data.place.name);
+      deletePin(data.place.name);
 
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log( "GET request_close_emergency => " + textStatus );
 
-    }).always(function() { 
-      // alert("complete"); 
     });
 }
