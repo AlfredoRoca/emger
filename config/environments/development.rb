@@ -43,5 +43,8 @@ Rails.application.configure do
     value_for_emergency:  1,
     value_for_clear:      2
   }
+  # places_id corresponding to controlled areas in PLC
+  # must be in concordance with assigned in PLC to send information to Rails
+  config.modbus_list_of_places = [1, 19, 21, 8]
 
 end

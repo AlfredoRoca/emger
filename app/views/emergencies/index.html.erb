@@ -1,3 +1,10 @@
+<% content_for :js do %>
+  <%= javascript_include_tag 'worker', 'data-turbolinks-track' => true %>
+  <script>
+    worker();
+  </script>
+<% end %>
+
 <% if current_user %>
   <h1>Emergencies</h1>
   <%= button_to "New", new_emergency_path, method: :get, class: "btn btn-success btn-xs"  %>

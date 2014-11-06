@@ -131,7 +131,7 @@ var contentFormString = function(lat, lng) {
 var contentInfoString = function(name, place_id) {
   var html = "<table>" +
              "<tr><td>Place name: " + name + "</td> </tr>" +
-             "<tr><td><a href='" + ROOT_URL + "/places/" + place_id + "'>More info</a></td> </tr>" +
+             "<tr><td><a href='" + ROOT_URL + "places/" + place_id + "'>More info</a></td> </tr>" +
              "</table>";
   return html;
 }

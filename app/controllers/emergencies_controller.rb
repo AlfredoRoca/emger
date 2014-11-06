@@ -40,7 +40,7 @@ class EmergenciesController < ApplicationController
   def close
     if @emergency.update(status: Emergency::EMERGENCY_STATUS_CLOSED)
       flash[:notice] = "Emergency successfully closed..."
-      redirect_to write_clear_in_plc_url
+      redirect_to clear_emergency_in_plc_path(@emergency.place)
     else
       flash[:error] = "Impossible to close the emergency. Review the errors..."
       render :show
@@ -48,13 +48,12 @@ class EmergenciesController < ApplicationController
   end
 
   def close_by_place
-    @emergency = Emergency.find_by(place_id: params[:id])
-    if @emergency.update(status: Emergency::EMERGENCY_STATUS_CLOSED)
+    emergency = Emergency.find_by(place_id: params[:id])
+    if emergency.update(status: Emergency::EMERGENCY_STATUS_CLOSED)
       flash[:notice] = "Emergency successfully closed..."
-      @place = @emergency.place
+      place = emergency.place
       respond_to do |format|
-        format.html redirect_to write_clear_in_plc_url
-        response = {"place" => @place, "emergency" => @emergency}
+        response = {"place" => place, "emergency" => emergency}
         format.json { render json: response }
       end
     else

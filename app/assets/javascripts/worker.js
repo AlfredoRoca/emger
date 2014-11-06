@@ -19,7 +19,7 @@ function worker() {
     }).always(function() { 
       // Schedule the next request when the current one's complete
       // alert("complete"); 
-      setTimeout(worker, 3000);
+      setTimeout(worker, 10000);
 
     });
 };
@@ -28,14 +28,17 @@ function processModbusInfo(data) {
   console.log("Processing modbus info...");
   console.log(data);
   data.forEach(function(element, index, array) {
-    if (element.status == MODBUS_SERVER_VALUE_FOR_EMERGENCY) {
-      console.log("Emergency in " + element.name );
-      requestPlaceInfo(element.place_id); 
-      // and create an emergency and put a pin
-    }
-    if (element.status == MODBUS_SERVER_VALUE_FOR_CLEAR) {
-      // close the emergency associated
-      requestCloseEmergency(element.place_id);
+    switch (element.status) {
+      case MODBUS_SERVER_VALUE_FOR_EMERGENCY:
+        console.log("Emergency in " + element.name );
+        requestPlaceInfo(element.place_id); 
+        // and create an emergency and put a pin
+        break;
+      case 0:
+      case MODBUS_SERVER_VALUE_FOR_CLEAR:
+        requestCloseEmergency(element.place_id);
+        // requestCloseEmergencyInPLC(element.place_id);
+        break;
     }
   });
 }
@@ -50,8 +53,14 @@ function requestPlaceInfo(place_id) {
     }).done(function(place,textStatus, jqXHR) {
       console.log("GET request_place_info: ");
       console.log(place);
-      dropAPin(place, customIcons.red.icon);
       createANewModbusEmergency(place);
+      try {
+        dropAPin(place, customIcons.red.icon);
+      }
+      catch(e) {
+        // in emergencies index page, gmap.js is not open
+        // so dropPin is undefined
+      }
 
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log( "GET request_place_info => " + textStatus );
@@ -66,7 +75,6 @@ function createANewModbusEmergency(place) {
   $.ajax({
     type: "POST",
     url: 'emergencies/' + place.id.toString() + '/modbus_new_emergency',
-    data: { },
     dataType: "json"
 
     }).done(function(data, textStatus, jqXHR) {
@@ -87,7 +95,7 @@ function requestCloseEmergency(place_id) {
   console.log("request_close_emergency: place_id = " + place_id);
   $.ajax({
     type: "GET",
-    url: 'emergency/' + place_id + "/close_by_place",
+    url: 'emergencies/' + place_id + "/close_by_place",
     dataType: "json"
 
     }).done(function(data,textStatus, jqXHR) {
@@ -98,6 +106,23 @@ function requestCloseEmergency(place_id) {
 
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log( "GET request_close_emergency => " + textStatus );
+
+    });
+}
+
+function requestCloseEmergencyInPLC(place_id) {
+  console.log("request_close_emergency_in_plc: place_id = " + place_id);
+  $.ajax({
+    type: "GET",
+    url: 'clear_emergency_in_plc/' + place_id,
+    dataType: "json"
+
+    }).done(function(data,textStatus, jqXHR) {
+      console.log("GET clear_emergency_in_plc... " + place_id);
+      console.log(data);
+
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      console.log( "GET clear_emergency_in_plc " + place_id + " => " + textStatus );
 
     });
 }
