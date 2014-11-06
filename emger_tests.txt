@@ -1,0 +1,320 @@
+/home/vagrant/.rvm/rubies/ruby-2.1.0-preview1/bin/ruby -I/home/vagrant/.rvm/gems/ruby-2.1.0-preview1/gems/rspec-core-3.0.4/lib:/home/vagrant/.rvm/gems/ruby-2.1.0-preview1/gems/rspec-support-3.0.4/lib -S /home/vagrant/.rvm/gems/ruby-2.1.0-preview1/gems/rspec-core-3.0.4/exe/rspec ./spec/controllers/companies_controller_spec.rb ./spec/controllers/emergencies_controller_spec.rb ./spec/controllers/followups_controller_spec.rb ./spec/controllers/login_controller_spec.rb ./spec/controllers/modbus_controller_spec.rb ./spec/controllers/people_controller_spec.rb ./spec/controllers/places_controller_spec.rb ./spec/controllers/scenarios_controller_spec.rb ./spec/controllers/welcome_controller_spec.rb ./spec/mailers/person_mailer_spec.rb ./spec/models/company_spec.rb ./spec/models/emergency_spec.rb ./spec/models/followup_spec.rb ./spec/models/notification_relation_spec.rb ./spec/models/person_spec.rb ./spec/models/place_spec.rb ./spec/models/scenario_spec.rb ./spec/views/companies/edit.html.erb_spec.rb ./spec/views/companies/index.html.erb_spec.rb ./spec/views/companies/new.html.erb_spec.rb ./spec/views/companies/show.html.erb_spec.rb ./spec/views/emergencies/index.html.erb_spec.rb ./spec/views/emergencies/new.html.erb_spec.rb ./spec/views/emergencies/show.html.erb_spec.rb ./spec/views/followups/destroy.html.erb_spec.rb ./spec/views/followups/edit.html.erb_spec.rb ./spec/views/followups/index.html.erb_spec.rb ./spec/views/followups/new.html.erb_spec.rb ./spec/views/followups/show.html.erb_spec.rb ./spec/views/login/new.html.erb_spec.rb ./spec/views/people/edit.html.erb_spec.rb ./spec/views/people/index.html.erb_spec.rb ./spec/views/people/new.html.erb_spec.rb ./spec/views/people/show.html.erb_spec.rb ./spec/views/places/edit.html.erb_spec.rb ./spec/views/places/index.html.erb_spec.rb ./spec/views/places/show.html.erb_spec.rb ./spec/views/scenarios/edit.html.erb_spec.rb ./spec/views/scenarios/index.html.erb_spec.rb ./spec/views/scenarios/new.html.erb_spec.rb ./spec/views/scenarios/show.html.erb_spec.rb
+
+CompaniesController
+  GET index
+    returns http success
+    renders index template
+    renders the list of companies ordered alfabetically
+  GET new
+    returns http success
+    renders new template
+  GET show
+    returns http success
+    renders show template
+    renders the company information
+  GET edit
+    returns http success
+    renders edit template
+
+EmergenciesController
+  GET index
+    HTML
+      returns http success
+      renders the index template
+      shows the list of emergencies
+    JSON
+      returns http success
+      returns the list of open emergencies
+  GET places
+    HTML
+      returns http success
+      renders the open emergencies places template
+      shows the list of places of open emergencies
+    JSON
+      returns the list of the places of open emergencies
+  GET new
+    returns http success
+    renders the new template
+  GET show
+    returns http success
+    renders the show template
+  GET edit
+    returns http success
+    renders the edit template
+
+FollowupsController
+  GET index
+    returns http success
+    renders the index template
+    renders the list of followups
+  GET new
+    returns http success
+    renders the new template
+  GET edit
+    returns http success
+    renders the edit template
+    renders the info
+  GET show
+    returns http success
+    renders the show template
+    renders the info
+
+LoginController
+  POST #create (login)
+    authenticates user and redirects to root url index with id in session
+    with wrong password flashes error and renders the new form again
+    with wrong email flashes error and renders the new form again
+  DELETE #destroy (logout)
+    deletes session id and redirects to root (JS format)
+    deletes session id and redirects to root (HTML format)
+
+PeopleController
+  GET index
+    returns http success
+    rendeers the index template
+    renders the list of people ordered alfabetically by lastname+name
+  GET show
+    returns http success
+    renders the show template
+    renders the person information
+  GET edit
+    returns http success
+    renders the edit template
+    renders the person information
+  GET new
+    returns http success
+    renders new template
+
+PlacesController
+  places/located
+    returns all the places with coordinates ordered alfabetically
+  GET index
+    returns http success
+    renders the index template
+    renders list of places ordered alfabetically
+  GET show
+    HTML
+      returns http success
+      renders the show template
+    JSON
+      returns the place information
+  GET edit
+    returns http success
+    renders the edit template
+
+ScenariosController
+  GET index
+    returns http success
+    render the index template
+    shows the list of scenarios
+  GET new
+    returns http success
+    renders the new template
+  GET show
+    returns http success
+    renders the show template
+  GET edit
+    returns http success
+    renders the edit template
+
+WelcomeController
+  index
+    renders the root page
+
+PersonMailer
+  add some examples to (or delete) /vagrant/emger/spec/mailers/person_mailer_spec.rb (PENDING: Not yet implemented)
+
+Company
+  validations
+    validates presence of name
+    validates uniqueness of name
+
+Emergency
+  Validations
+    validates presence of date
+
+Followup
+  add some examples to (or delete) /vagrant/emger/spec/models/followup_spec.rb (PENDING: Not yet implemented)
+
+NotificationRelation
+  add some examples to (or delete) /vagrant/emger/spec/models/notification_relation_spec.rb (PENDING: Not yet implemented)
+
+Person
+  validations
+    validates presence of email
+    validates uniqueness of email
+    validates presence of name
+    validates presence of lastname
+    validates presence of password
+
+Place
+  validations
+    validates presence of name
+    validates uniqueness of name
+
+Scenario
+  Validations
+    name
+      validates presence of name
+      validates uniqueness of name
+    description
+      validates presence of description
+      validates uniqueness of description
+
+companies/edit.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/companies/edit.html.erb_spec.rb (PENDING: Not yet implemented)
+
+companies/index.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/companies/index.html.erb_spec.rb (PENDING: Not yet implemented)
+
+companies/new.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/companies/new.html.erb_spec.rb (PENDING: Not yet implemented)
+
+companies/show.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/companies/show.html.erb_spec.rb (PENDING: Not yet implemented)
+
+emergencies/index.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/emergencies/index.html.erb_spec.rb (PENDING: Not yet implemented)
+
+emergencies/new.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/emergencies/new.html.erb_spec.rb (PENDING: Not yet implemented)
+
+emergencies/show.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/emergencies/show.html.erb_spec.rb (PENDING: Not yet implemented)
+
+followups/destroy.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/followups/destroy.html.erb_spec.rb (PENDING: Not yet implemented)
+
+followups/edit.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/followups/edit.html.erb_spec.rb (PENDING: Not yet implemented)
+
+followups/index.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/followups/index.html.erb_spec.rb (PENDING: Not yet implemented)
+
+followups/new.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/followups/new.html.erb_spec.rb (PENDING: Not yet implemented)
+
+followups/show.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/followups/show.html.erb_spec.rb (PENDING: Not yet implemented)
+
+login/new.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/login/new.html.erb_spec.rb (PENDING: Not yet implemented)
+
+people/edit.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/people/edit.html.erb_spec.rb (PENDING: Not yet implemented)
+
+people/index.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/people/index.html.erb_spec.rb (PENDING: Not yet implemented)
+
+people/new.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/people/new.html.erb_spec.rb (PENDING: Not yet implemented)
+
+people/show.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/people/show.html.erb_spec.rb (PENDING: Not yet implemented)
+
+places/edit.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/places/edit.html.erb_spec.rb (PENDING: Not yet implemented)
+
+places/index.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/places/index.html.erb_spec.rb (PENDING: Not yet implemented)
+
+places/show.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/places/show.html.erb_spec.rb (PENDING: Not yet implemented)
+
+scenarios/edit.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/scenarios/edit.html.erb_spec.rb (PENDING: Not yet implemented)
+
+scenarios/index.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/scenarios/index.html.erb_spec.rb (PENDING: Not yet implemented)
+
+scenarios/new.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/scenarios/new.html.erb_spec.rb (PENDING: Not yet implemented)
+
+scenarios/show.html.erb
+  add some examples to (or delete) /vagrant/emger/spec/views/scenarios/show.html.erb_spec.rb (PENDING: Not yet implemented)
+
+Pending:
+  PersonMailer add some examples to (or delete) /vagrant/emger/spec/mailers/person_mailer_spec.rb
+    # Not yet implemented
+    # ./spec/mailers/person_mailer_spec.rb:5
+  Followup add some examples to (or delete) /vagrant/emger/spec/models/followup_spec.rb
+    # Not yet implemented
+    # ./spec/models/followup_spec.rb:4
+  NotificationRelation add some examples to (or delete) /vagrant/emger/spec/models/notification_relation_spec.rb
+    # Not yet implemented
+    # ./spec/models/notification_relation_spec.rb:4
+  companies/edit.html.erb add some examples to (or delete) /vagrant/emger/spec/views/companies/edit.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/companies/edit.html.erb_spec.rb:4
+  companies/index.html.erb add some examples to (or delete) /vagrant/emger/spec/views/companies/index.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/companies/index.html.erb_spec.rb:4
+  companies/new.html.erb add some examples to (or delete) /vagrant/emger/spec/views/companies/new.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/companies/new.html.erb_spec.rb:4
+  companies/show.html.erb add some examples to (or delete) /vagrant/emger/spec/views/companies/show.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/companies/show.html.erb_spec.rb:4
+  emergencies/index.html.erb add some examples to (or delete) /vagrant/emger/spec/views/emergencies/index.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/emergencies/index.html.erb_spec.rb:4
+  emergencies/new.html.erb add some examples to (or delete) /vagrant/emger/spec/views/emergencies/new.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/emergencies/new.html.erb_spec.rb:4
+  emergencies/show.html.erb add some examples to (or delete) /vagrant/emger/spec/views/emergencies/show.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/emergencies/show.html.erb_spec.rb:4
+  followups/destroy.html.erb add some examples to (or delete) /vagrant/emger/spec/views/followups/destroy.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/followups/destroy.html.erb_spec.rb:4
+  followups/edit.html.erb add some examples to (or delete) /vagrant/emger/spec/views/followups/edit.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/followups/edit.html.erb_spec.rb:4
+  followups/index.html.erb add some examples to (or delete) /vagrant/emger/spec/views/followups/index.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/followups/index.html.erb_spec.rb:4
+  followups/new.html.erb add some examples to (or delete) /vagrant/emger/spec/views/followups/new.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/followups/new.html.erb_spec.rb:4
+  followups/show.html.erb add some examples to (or delete) /vagrant/emger/spec/views/followups/show.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/followups/show.html.erb_spec.rb:4
+  login/new.html.erb add some examples to (or delete) /vagrant/emger/spec/views/login/new.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/login/new.html.erb_spec.rb:4
+  people/edit.html.erb add some examples to (or delete) /vagrant/emger/spec/views/people/edit.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/people/edit.html.erb_spec.rb:4
+  people/index.html.erb add some examples to (or delete) /vagrant/emger/spec/views/people/index.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/people/index.html.erb_spec.rb:4
+  people/new.html.erb add some examples to (or delete) /vagrant/emger/spec/views/people/new.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/people/new.html.erb_spec.rb:4
+  people/show.html.erb add some examples to (or delete) /vagrant/emger/spec/views/people/show.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/people/show.html.erb_spec.rb:4
+  places/edit.html.erb add some examples to (or delete) /vagrant/emger/spec/views/places/edit.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/places/edit.html.erb_spec.rb:4
+  places/index.html.erb add some examples to (or delete) /vagrant/emger/spec/views/places/index.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/places/index.html.erb_spec.rb:4
+  places/show.html.erb add some examples to (or delete) /vagrant/emger/spec/views/places/show.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/places/show.html.erb_spec.rb:4
+  scenarios/edit.html.erb add some examples to (or delete) /vagrant/emger/spec/views/scenarios/edit.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/scenarios/edit.html.erb_spec.rb:4
+  scenarios/index.html.erb add some examples to (or delete) /vagrant/emger/spec/views/scenarios/index.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/scenarios/index.html.erb_spec.rb:4
+  scenarios/new.html.erb add some examples to (or delete) /vagrant/emger/spec/views/scenarios/new.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/scenarios/new.html.erb_spec.rb:4
+  scenarios/show.html.erb add some examples to (or delete) /vagrant/emger/spec/views/scenarios/show.html.erb_spec.rb
+    # Not yet implemented
+    # ./spec/views/scenarios/show.html.erb_spec.rb:4
+
+Finished in 4.86 seconds (files took 15.9 seconds to load)
+112 examples, 0 failures, 27 pending

@@ -6,11 +6,11 @@ RSpec.describe LoginController, :type => :controller do
 
     let(:user) { FactoryGirl.create(:person, name: "pepe", lastname: "lopez", email: "qw@qwe.com", password: "1")}
     
-    it "authenticates user and redirects to emergencies index with id in session" do
+    it "authenticates user and redirects to root url index with id in session" do
       post :create, email: user.email, password: "1"
       session[:current_user_id] = user.id
 
-      expect(response).to redirect_to(emergencies_path)
+      expect(response).to redirect_to(root_url)
       expect(session[:current_user_id]).to eq(user.id)
     end
 
