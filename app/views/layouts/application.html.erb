@@ -60,10 +60,12 @@
     </div> <!--  /.container-fluid -->
   </nav>
   <div class="container">
-    <% flash.map do |key, msg| %>
-      <%= content_tag :div, msg, id: key, role: "alert", class: "alert alert-warning" 
-       %>
-    <% end %>
+    <div class="flash">
+      <% flash.map do |key, msg| %>
+        <%= content_tag :div, msg, id: key, role: "alert", class: "alert alert-warning" 
+         %>
+      <% end %>
+    </div>
 
     <%= yield %>
   </div>

@@ -1,6 +1,9 @@
 <h1>Emergency information</h1>
 <% if current_user %>
-
+  <p>
+    <%= button_to "Close emergency", close_emergency_path(@emergency), 
+        method: :get, class: "btn btn-danger btn-xs" %>
+  </p>
   <% if @emergency.errors.any? %>
     <ul>
       <% @emergency.errors.full_messages.each do |msg| %>
@@ -13,7 +16,7 @@
     <li>Date: <%= localize_date @emergency.date %></li>
     <li>Status: <%= @emergency.status %></li>
     <li><h4>Place: <%= @emergency.place.name %> - <%= @emergency.place.description %></h4>
-      <%= button_to "Show", place_path(@emergency.place),
+      <%= button_to "Show place details", place_path(@emergency.place),
           method: :get, class: "btn btn-info btn-xs" %></li>
     <% if @emergency.simulacrum %>
       <li>"Simulacrum" </li>
@@ -21,23 +24,21 @@
   </ul>
 
   <h3>Follow-up</h3>
-  <%= button_to "New", new_emergency_followup_path(@emergency), 
-      method: :get, class: "btn btn-success btn-xs"  %>
+  <p><%= button_to "New", new_emergency_followup_path(@emergency), 
+        method: :get, class: "btn btn-success btn-xs"  %></p>
   <% if @emergency.followups.any? %>
     <% @emergency.followups.each do |f| %>
       <dl class="dl-horizontal">
             <dt>Created:</dt> <dd><%= localize_date f.created_at %> </dd>
             <dt>Title:</dt> <dd><%= f.title %></dd>
             <dt>Description:</dt> <dd><%= f.description %></dd>
-            <dt></dt><dd><%= button_to "Edit follow-up", edit_emergency_followup_path(@emergency, f),
-                            method: :get, class: "btn btn-info btn-xs" %></dd>
+            <dt></dt><dd><p><%= button_to "Edit follow-up", edit_emergency_followup_path(@emergency, f),
+                method: :get, class: "btn btn-info btn-xs" %></p></dd>
       </dl>
     <% end %>
   <% else %>
-    <p>No follow-up</p>
+    <p>No follow-ups</p>
   <% end %>
 
-  <%= button_to "Close emergency", close_emergency_path(@emergency), 
-      method: :get, class: "btn btn-danger btn-xs" %>
 
 <% end %>

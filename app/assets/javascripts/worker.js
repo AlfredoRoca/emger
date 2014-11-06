@@ -19,13 +19,14 @@ function worker() {
     }).always(function() { 
       // Schedule the next request when the current one's complete
       // alert("complete"); 
-      setTimeout(worker, 10000);
+      setTimeout(worker, 3000);
 
     });
 };
 
 function processModbusInfo(data) {
   console.log("Processing modbus info...");
+  console.log(data);
   data.forEach(function(element, index, array) {
     if (element.status == MODBUS_SERVER_VALUE_FOR_EMERGENCY) {
       console.log("Emergency in " + element.name );
